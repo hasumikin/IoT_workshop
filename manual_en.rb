@@ -145,11 +145,10 @@ wsl_usb = ERB.new <<~EOF
   ```bash
   pnputil -e
   ```
-
-  非常に多くの行が出力されますが、すべてテキストエディタにコピー＆ペーストするなどして、ドライバの情報を探します。
-  両方のドライバをインストールした筆者の環境では、このように表示されました。
-  `oem9.inf` がSilicon Labs社のシステム定義ファイル、 `oem158.inf` がPololu社のシステム定義ファイルです。
-  __Driver date and version__ の値の違いに注目してください。
+  copy and paste all into a text editor to find information about the driver.
+  It looks like my environment where both drivers were installed.
+  `oem9.inf` is a Silicon Labs system definition file, and` oem158.inf` is a Pololu system definition file.
+  Notice the difference in the value of __Driver date and version__.
   ```bash
   Published name :            oem9.inf
   Driver package provider :   Silicon Laboratories Inc.
@@ -164,34 +163,37 @@ wsl_usb = ERB.new <<~EOF
   Signer name :               Microsoft Windows Hardware Compatibility Publisher
   ```
 
-  この状態では、より新しいSilicon Labs社のドライバが使用されてしまうため、これを削除しなければなりません。
+  
+  In this situation, the newer Silicon Labs driver will be used and this should be removed.
 
-  ### デバイスドライバを完全に削除する
+  ### Remove the device driver completely
 
-  【ご注意ください】この手順によりWindowsが正常に動作しなくなる危険があります。自己責任において実施してください。
+  [Caution] There is a risk that Windows will not operate properly by this procedure. Please do it at your own risk.
 
-  最初にデバイスマネージャーを使用してドライバをアンインストールしてください。
+  Please uninstall the driver using Device Manager first.
 
   ![](../images/uninstall_device.png)
 
-  つぎにWindows PowershellまたはCommand Prompt(CMD)を __administratorとして起動__ し、下記のコマンドでシステム定義を削除します。
-  ファイル名 `oem9.inf` は __環境によって異なります__ のでご注意ください。
+  Then start Windows Powershell or Command Prompt (CMD) as __administrator __ and delete the system definition with the following command.
+  Note that the file name `oem9.inf` depends on the __environment__.
   ```bash
   pnputil -d oem9.inf
   ```
 
-  `Driver package deleted successfully.` と表示されれば削除成功です。
+  
+  If you see `Driver package deleted successfully.`, the deletion is successful.
 
-  何らかの理由で削除できない場合や、すでにインストールされているドライバがなんであるかよくわからない場合などは、WSLではなくMSYS2の環境構築をお選びください。あるいは両方を構築しておいて、ワークショップ当日に使える方を使う、というのもよいと思います。
+  
+If you can not delete for some reason, or if you are not sure what drivers are already installed, please select MSYS2 environment construction instead of WSL. Or I think it is better to build both and use the one that can be used on the day of the workshop.
 
 EOF
 
 msys2_usb = ERB.new <<~EOF
-  ## USBドライバをインストール
+  ## Install USB driver
 
-  今回のワークショップで使用するESP32開発キットには、「CP2102N」というシリアル-USB変換チップが使用されており、このドライバをWindowsにインストールする必要があります。
+  The ESP32 development kit used in this workshop uses a serial-to-USB converter chip called "CP2102N", and this driver needs to be installed on Windows.
 
-  以下のうちどちらか一方のページからお使いのOSに該当するドライバをダウンロードし、インストールしてください。もしもWSLを併用する可能性がある場合は、後者（Pololu社）のドライバをお使いください。理由はWSLの環境構築マニュアルを参照してください。
+  Download and install the appropriate driver for your operating system from either of the following pages. If there is a possibility of using WSL together, please use the latter (Pololu) driver. For the reason, refer to the WSL environment configuration manual.
 
   https://jp.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
 
@@ -200,54 +202,57 @@ msys2_usb = ERB.new <<~EOF
 EOF
 
 msys2_intro = ERB.new <<~EOF
-  ## Windowsの「MSYS2」にESP開発環境を構築
+  ## Build ESP development environment on Windows "MSYS2"
 
-  ※あなたのOSが64bit版のWindows10で、かつPololu社のUSBドライバを有効化できているなら、WSLの環境構築をおすすめします。
+  ※If your operating system is a 64-bit version of Windows 10 and you have enabled the Pololu USB driver, we recommend that you build a WSL environment.
 
-  MSYS2は、Windows上にUnixコマンドライン環境をエミュレートするための統合パッケージです。Espressif社はMSYS2に各種の必要ツールをセットアップしたオール・イン・ワンのZIPアーカイブを提供しているので、それをそのまま使用するのが最も簡単な開発環境構築です。
+  
+  MSYS2 is an integrated package for emulating Unix command line environment on Windows. Since Espressif offers an all-in-one ZIP archive with MSYS2 with various necessary tools set up, using it as it is is the easiest development environment.
 
-  もしも「素のMSYS2」に依存ツールを1つずつインストールしてみたい場合は、下記ページにそのための情報があります。ただし筆者は未検証です。
+  
+  If you would like to install dependent tools one by one on "raw MSYS2", you can find the information on the following page. However, I have not verified.
 
   https://docs.espressif.com/projects/esp-idf/en/latest/get-started/windows-setup-scratch.html
 
 EOF
 
 msys2_idf = ERB.new <<~EOF
-  ## 環境構築
+  ## Environment
 
-  ### MSYS2（およびツール群）のダウンロードと配置
+  ### Download and place MSYS2 (and tools)
 
-  下記リンクからオール・イン・ワンのZIPアーカイブをダウンロードして、解凍してください。
+  
+  Download the all-in-one ZIP archive from the link below and unzip it.
 
   https://dl.espressif.com/dl/esp32_win32_msys2_environment_and_toolchain-20181001.zip
 
-  任意の場所に解凍して構いませんが、一般的にはWindowsがインストールされているCドライブ内のどこかがよいと思われます。
-  解凍にはかなり時間がかかります。解凍してからフォルダを移動するのにも時間がかかるので、最初から配置したい場所に解凍しましょう。
+  You can unzip it to any location, but in general it seems to be somewhere in the C drive where Windows is installed.
+  Decompression takes quite a while. It takes time to unzip and move the folder, so unzip it to the location you want from the beginning.
 
-  解凍・配置時に注意すべきことがあります。その過程でなんらかのアンチウィルスの仕組みが一部のファイルを自動削除してしまうかもしれません。これが発生すると、正しく使用できなくなります。
+  There are things to be aware of when unpacking and placing. In the process, some anti-virus mechanism may delete some files automatically. If this happens, it can not be used properly.
 
-  解凍すると現れる `msys32` ディレクトリ内が下の画像のようになっていれば、概ね問題ないと思われます。
+  If the `msys32` directory looks like the image below when you unzip it, it's probably not a problem.
 
   ![](../images/msys2.png)
 
-  筆者の環境では当初、etcディレクトリなどが削除されてしまったので、仮想のLinux上で解凍して対処しました。
+  At first, the etc directory etc. were deleted in my environment, so I unpacked and dealt with it on virtual Linux.
 
-  しかしその後、本稿執筆のために再現させようとしても再現しなかったため、本当はなにが原因だったのかわからないし回避方法も不明です。
+  However, after that, even if I tried to reproduce it for writing this article, I did not reproduce it, so I don't really know what caused it or how to avoid it.
 
-  ### MSYS2の起動と設定
+  ### MSYS2 startup and setting
 
-  `msys32` ディレクトリ内の `mingw32.exe` を起動してください。 `mingw64.exe` ではダメです。
-  これはあなたのWindowsが64bit版であるか32bit版であるかにかかわりません。ESP-IDFがmingw64に対応していません。
+  Start `mingw32.exe` in the` msys32` directory. (NOT `mingw64.exe`).
+  This doesn't matter if your Windows is a 64-bit or 32-bit version. ESP-IDF does not support mingw64.
 
-  以降、MSYS2を起動するときは毎回 `mingw32.exe` を使用してください。
+  From now on, use `mingw32.exe` every time you start MSYS2.
 
-  .bash_profileファイルに環境変数を設定し、有効化します。
+  Set environment variables in the .bash_profile file and activate it.
   ```bash
   echo 'export IDF_PATH="$HOME/esp/esp-idf"' >> $HOME/.bash_profile
   source $HOME/.bash_profile
   ```
 
-  ESP-IDFを配置します。macOSやWSLでインストールが必要だった関連ツール群はすでにインストールされているため、簡単です。
+  Its easy with MacOs as related tools and WSL are already installed
   ```bash
   mkdir $HOME/esp && cd $HOME/esp
   git clone --recursive https://github.com/espressif/esp-idf.git
@@ -257,49 +262,49 @@ EOF
 
 
 wsl_intro = ERB.new <<~EOF
-  ## Windowsの「Subsystem for Linux (WSL) 」にESP開発環境を構築
+  ## Build ESP development environment on Windows "Subsystem for Linux (WSL)"
 
-  WSLは、64bit版のWindows10（またはWindows Server）上でLinuxの実行ファイルをネイティブ実行できる環境です。
-  Windows8以前または32bit版Windows10ではWSLを利用できないため、MSYS2をお使いください。
+  WSL is an environment that can execute Linux executables natively on 64-bit Windows 10 (or Windows Server).
+  Use MSYS2 because WSL can not be used with Windows 8 or earlier or 32-bit version Windows 10.
 
-  WSLにESP-IDFをインストールすることでLinux上のESP開発環境と同等の環境を構築できます。
-  ファームウェアのビルド速度がMSYS2より大幅に速いため（というよりもMSYS2がかなり遅いのです）、これから新たに環境構築する方はWSL環境の構築を先に試してみてください。
+  By installing ESP-IDF in WSL, you can build an environment equivalent to the ESP development environment on Linux.
+  As the firmware build speed is much faster than MSYS2 (or rather MSYS2 is much slower), if you are going to build a new environment, try building a WSL environment first.
 
 EOF
 
 wsl_idf = ERB.new <<~EOF
-  ## 環境構築
+  ## Environment
 
   ### Windows Update
 
-  まず、Windows10をMicrosoftが提供している最新の状態に更新してください。更新されていないWindowsでは、WSLの機能のうちわれわれが必要とするものを利用できない可能性があります。
+  First, please update Windows 10 to the latest state provided by Microsoft. On Windows that has not been updated, it is possible that some of the features of WSL may not be available.
 
-  ### WSL (Ubuntu) のインストール
+  ### Install WSL (Ubuntu)
 
-  「設定」→「アプリと機能」→「プログラムと機能」をクリックします。
-  ![](../images/wsl-01-ja.png)
+  Click "Settings" → "Apps and Features" → "Programs and Features".
+  ![](../images/wsl-01-en.png)
 
-  「Windowsの機能の有効化または無効化」をクリックし、「Windowsの機能」ダイアログ内の「Windows Subsystem for Linux」にチェックを入れ、「OK」をクリックします。
-  ![](../images/wsl-02-ja.png)
+  Click "Turn Windows features on or off", check "Windows Subsystem for Linux" in the "Windows Features" dialog, and click "OK."
+  ![](../images/wsl-02-en.png)
 
-  再起動を促されるので「今すぐ再起動」をクリックします。
-  ![](../images/wsl-03-ja.png)
+  Click "Restart now" as it will prompt you to reboot.
+  ![](../images/wsl-03-en.png)
 
-  再起動後、「Microsoft Store」アプリで「Ubuntu」を検索、クリックしてインストールします。
+  After rebooting, search for "Ubuntu" in the "Microsoft Store" app and click to install.
   ![](../images/wsl-04.png)
 
-  「Ubuntu」アプリ（これがWSLのUbuntu版です）を起動します。
+  Launch the "Ubuntu" app (this is the Ubuntu version of WSL).
   ![](../images/wsl-05.png)
 
-  初回の起動時にはUnixユーザ名とパスワードの設定が必要です。
+  The first time you start up, you need to set the Unix username and password.
 
-  __このユーザ名は、Windowsのログインアカウントと同じものにしてください。そうしないと、WindowsとWSL間の共有ディレクトリが見つからなくなります。__
+  __ This username should be the same as your Windows login account. Otherwise, the shared directory between Windows and WSL will not be found. __
 
   ![](../images/wsl-06.png)
 
-  ### Ubuntu上での環境構築
+  ### Setup environment on Ubuntu
 
-  関連パッケージをインストールします。
+  Install related packages.
   ```bash
   sudo apt update
   sudo apt install tree gcc git wget make libncurses-dev flex bison \\
@@ -307,7 +312,7 @@ wsl_idf = ERB.new <<~EOF
     python-cryptography python-future python-pyparsing
   ```
 
-  Espressif社が提供しているツール群をダウンロードし、解凍、配置します。
+  Download, unzip, and install the tools provided by Espressif.
   ```bash
   mkdir $HOME/esp
   cd $HOME/esp
@@ -316,43 +321,42 @@ wsl_idf = ERB.new <<~EOF
   rm xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz
   ```
 
-  .profileファイルに環境変数を設定し、有効化します。
+  Set environment variables in .profile file and enable it.
   ```bash
   echo 'export PATH="$HOME/esp/xtensa-esp32-elf/bin:$PATH"' >> $HOME/.profile
   echo 'export IDF_PATH="$HOME/esp/esp-idf"' >> $HOME/.profile
   source $HOME/.profile
   ```
 
-  ESP-IDFを配置します。
+  Clone ESP-IDF repo
   ```bash
   cd $HOME/esp
   git clone --recursive https://github.com/espressif/esp-idf.git
   ```
 
-  python製の関連ツールをインストールします。
+  Install python related tools.
   ```bash
   python -m pip install --user -r $IDF_PATH/requirements.txt
   ```
 
-  シリアルポートの権限が必要なので、自ユーザをdialoutグループに追加します。
+  Since you need serial port privileges, add your own user to the dialout group.
   ```bash
   sudo usermod -a -G dialout $USER
   ```
 
-  ### プログラム作成ディレクトリについて
-  Ubuntu上のVimなどではなく、Windows上に別途起動するエディタでプログラムを書くつもりでしたら、WindowsとWSLのディレクトリ共有について確認しておくとよいでしょう。
+  ### About program creation directory
+  If you intend to write a program with an editor that starts separately on Windows, not Vim on Ubuntu, you may want to check about directory sharing between Windows and WSL.
 
-  WSL上の `/mnt/c/Users/[usename]/esp` がWindows上の `c:¥Users¥[Windows account name]/esp` に一致します。
-  先述のとおり、 `[usename]` と `[Windows account name]` は同じ文字列でなければなりませんので、最初にWSL（Ubuntu）を起動したときに作成するusernameをWindowsアカウント名と同じものにするよう注意してください。
-
+  `/mnt/c/Users/[usename]/esp` on WSL matches` c:\Users\[Windows account name]/esp` on Windows.
+  As mentioned earlier, `[usename]` and `[Windows account name]` must be the same. ie; the username created when you  started WSL (Ubuntu) initially should be same as the Windows account name.  Please be careful about that.
 EOF
 
 hello_world_posix = ERB.new <<~EOF
   ## Hello mruby/c World!
 
-  mruby/cはマイコンだけでなく、パソコン（POSIX）でも動きます。Hello Worldを出力させてみましょう。
+  mruby / c runs not only on microcomputers but also on personal computers (POSIX). Let's output Hello World.
 
-  Makefileやmain.cなどがすでにできているリポジトリを用意しました。git cloneしてください。
+  I have prepared a repository that already has Makefile, main.c, etc. Please git clone.
 
   ### git clone
   ```bash
@@ -361,12 +365,12 @@ hello_world_posix = ERB.new <<~EOF
   cd hello-mrubyc-world-posix
   ```
 
-  ### Rubyプログラムを書く
+  ### Writing a Ruby Program
 
-  `mrblib/loops/master.rb` をテキストエディタで開き、以下の内容にして保存します。
+  Open `mrblib/loops/master.rb` in a text editor and save it with the following content.
 
-  <%= "WSLをお使いの方へ：WSLのCUIエディタを使わず、Windows上のエディタを使いたい場合は、環境構築編で説明した共有ディレクトリについて確認してください。共有ディレクトリがどこにあるかわからないと、ワークショップを進めることができません。非常に重要です。" if platform == "WSL" %>
-
+ <%= "For WSL users: If you want to use an editor on Windows without using the WSL CUI editor, check the shared directory described in the section on environment construction. Where is the shared directory? If you do not know, you can not proceed with the workshop, which is very important. "If platform ==" WSL "%>
+  
   ```ruby:mrblib/loops/master.rb
   while true
     puts "Hello World!"
@@ -374,15 +378,15 @@ hello_world_posix = ERB.new <<~EOF
   end
   ```
 
-  ### ビルド、実行
+  ### Build & Run
 
   ```bash
   make && ./main
   ```
 
-  上記コマンドで以下のような画面になれば成功です！　1秒ごとに `Hello World!` が出力されます。
+  If you get the following screen with the above command, it is successful! `Hello World!` Is output every second.
 
-  このプログラムは `ctrl + C` で終了できます。
+  This program can be terminated with `ctrl + C`.
   ![](../images/hello_world.png)
 
 EOF
