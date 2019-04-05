@@ -4,7 +4,7 @@ require 'erb'
 introduction = ERB.new <<~EOF
   # Environment construction for ESP32 + mruby/c development-Introduction
 
-  Convert mruby source code (extension ". rb") to intermediate byte code of extension ". c" by using  mrbc (mruby compiler).The basic flow of mruby/c application development is to operate it (and the mruby/c runtime program) from "main.c".
+  Convert mruby source code (extension ".rb") to intermediate byte code of extension ".c" by using  mrbc (mruby compiler).The basic flow of mruby/c application development is to operate it (and the mruby/c runtime program) from "main.c".
 
   To develop ESP32 firmware with mruby/c, you need to set up ESP-IDF and related tools provided by Espressif.
   
@@ -21,7 +21,7 @@ introduction = ERB.new <<~EOF
   [Link]
 
   ### Windows
-  The ESP development environment does not work in the native Windows environment,but using a quasi-Linux environment enables ESP development.
+  The ESP development environment does not work in the native Windows environment,but using a semi Linux environment enables ESP development.
   There are two ways to do this:
 
   #### Windows10 (64 bit version)
@@ -36,7 +36,6 @@ introduction = ERB.new <<~EOF
 
   ### Linux Distributions
   Although we do not have environment configuration manual for Linux, it is not difficult for programmers who use Linux as a host OS.
-  Linux用の環境構築マニュアルは用意しませんが、ホストOSとしてLinuxをお使いになるようなプログラマにとっては難しいことではありません。
   refer to Ubuntu startup in the WSL manual for Windows and  build the ESP development environment.
 
   ## About Virtual Environment, Docker
@@ -57,7 +56,7 @@ about_ruby = ERB.new <<~EOF
   <% if platform != "MSYS2" %>
     There are several ways to install Ruby, but it is recommended to use the tool "rbenv" to make multiple Ruby coexist in the system.
 
-    **ワークショップの後半に時間があれば筆者作のmruby/c用便利ツール `mrubyc-utils` を使う予定があり、rbenvの環境のほうがスムーズに使用できます。
+    **if we have time after the workshop we will use a utility named `mrubyc-utils` which I made. It moves smoothly if you use rbenv
   <% end %>
 
 EOF
@@ -369,7 +368,7 @@ hello_world_posix = ERB.new <<~EOF
 
   Open `mrblib/loops/master.rb` in a text editor and save it with the following content.
 
- <%= "For WSL users: If you want to use an editor on Windows without using the WSL CUI editor, check the shared directory described in the section on environment construction. Where is the shared directory? If you do not know, you can not proceed with the workshop, which is very important. "If platform ==" WSL "%>
+ <%= "For WSL users: If you want to use an editor on Windows without using the WSL CUI editor, check the shared directory described in the section on environment construction. Where is the shared directory? If you do not know, you can not proceed with the workshop, which is very important." if platform =="WSL" %>
   
   ```ruby:mrblib/loops/master.rb
   while true
@@ -392,11 +391,11 @@ hello_world_posix = ERB.new <<~EOF
 EOF
 
 mac_ruby = ERB.new <<~EOF
-  ### Rubyのインストール
+  ### Ruby Installation
 
-  homebrewが導入済みであることを想定し、手順を説明します。homebrewを使用せずにrbenvをインストールしたい場合は、WSLの環境構築マニュアルの該当部分を参考にしてください。
+  Assuming that homebrew has been installed, the procedure is explained. If you want to install rbenv without using homebrew, refer to the relevant part of the WSL environment configuration manual.
 
-  rbenvとruby-buildをインストールし、パスを通すなどします。
+  Install rbenv and ruby-build, and pass the path.
   ```bash
   brew install openssl readline zlib rbenv ruby-build
   echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
@@ -404,18 +403,18 @@ mac_ruby = ERB.new <<~EOF
   source $HOME/.bash_profile
   ```
 
-  macOSにはRubyがインストールされていますが、せっかくなので新しいバージョンをインストールしましょう。
+  Ruby is installed on macOS, but please install a new version.
   ```bash
   rbenv install <%= cruby_version %>
   ```
-  このときに `The Ruby zlib extension was not compiled.` などのエラーが出てしまうときは、以下のようにすることでインストールできるかもしれません。
+  If you get an error such as `The Ruby zlib extension was not compiled.` at this time, you may be able to install it as follows.
   ```bash
   RUBY_CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib)" rbenv install <%= cruby_version %>
   ```
 
-  `zlib` のところが `readline` など別のライブラリかもしれません。適宜読み替えて対処してください。
+  `zlib` may be another library such as` readline`. Please replace as appropriate and take action.
 
-  最後にmrubyをインストールします。mruby2.xはまだmruby/cと統合されていないので、1.4.1を使用します。
+  Finally install mruby. Since mruby 2.x is not integrated with mruby / c, we use 1.4.1.
   ```bash
   rbenv install mruby-1.4.1
   ```
@@ -423,50 +422,49 @@ mac_ruby = ERB.new <<~EOF
 EOF
 
 msys2_ruby = ERB.new <<~EOF
-  ### Rubyインストール（Rubyinstaller2を使用）
+  ### Ruby installation (use Rubyinstaller2)
 
-  ※MSYS2にrbenvをインストールするのも可能なようですが、簡単ではなさそうです。挑戦してみたい方はネットで調べてみてください。
+  ※ It seems to be possible to install rbenv in MSYS2, but it is not easy. If you want to try it, check it out on the net.
 
-  最初にCRubyをインストールします。mrubyのビルドにはCRubyが必要なためです。
+  First install CRuby. This is because you need CRuby to build mruby.
 
-  MSYS2上ではなく、WindowsのGUI上で行ってください。WindowsでRubyを使用するための専用インストーラをダウンロードします。
+  Please do it on the GUI of Windows, not on MSYS2. Download a dedicated installer for using Ruby on Windows.
 
   https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-<%= cruby_version %>-1/rubyinstaller-<%= cruby_version %>-1-x86.exe
 
-  32bit版のRubyインストーラをダウンロードします。MSYS2でESP-IDFを使用するために `mingw32.exe` をPOSIXエミュレータとして使用するので、これにあわせています。
+  Download the 32-bit Ruby installer. We use `mingw32.exe` as a POSIX emulator in order to use ESP-IDF with MSYS2, so it is adapted to this.
 
-  ホストOSが64bit版のWindows8などである場合は、64bit用のRubyインストーラ（rubyinstaller-<%= cruby_version %>-1-x64.exe）でもよいかもしれませんが、未検証です。一般的に、64bit版のWindowsでは32bit版の実行ファイルが動作します。逆は動作しません。
-
-  ダウンロードしたをダブルクリックし、「I accept the license」を選択してから「NEXT」を押します。
+  If the host OS is a 64-bit version of Windows 8 etc., it may be a Ruby installer for 64-bit (rubyinstaller-<%= cruby_version %>-1-x64.exe), but it has not been verified. Generally, 32-bit executable files work on 64-bit versions of Windows. The reverse does not work.
+  Double-click the downloaded file, select "I accept the license" and press "NEXT".
   ![](../images/rubyinstaller2-01.png)
 
-  「Use UTF-8 as default external encoding.」のチェックが外れているでしょうから、チェックして、「Install」を押します（エンコーディングは今回のワークショップには関係ありませんが、他の用途に使用するときにこのほうがよさそうです）。
+  Since "Use UTF-8 as default external encoding." Will be unchecked, check it and press "Install" (Encoding is not related to this workshop, but used for other purposes Sometimes this looks better).
   ![](../images/rubyinstaller2-02.png)
 
-  「Run 'ridk...」にチェックが入っていることを確認して、「Finish」を押します。
+  Confirm that "Run 'ridk ..." is checked, and press "Finish".
   ![](../images/rubyinstaller2-03.png)
 
-  CRubyのインストールが完了すると、関連ツールをインストールするためのこの画面になるので「3」を入力してエンター（リターン）キーを押します。
+  When the installation of CRuby is completed, this screen for installing the related tools will be displayed. Enter "3" and press the enter (return) key.
   ![](../images/rubyinstaller2-04.png)
 
-  この画面では何も入力せず、エンターキーだけを押してRubyのインストールを終了します。
+  Do not enter anything on this screen, just press the Enter key to finish installing Ruby.
   ![](../images/rubyinstaller2-05.png)
 
-  MSYS2のコマンドラインにパスを通します。
+  Pass the path to the MSYS2 command line.
   ```bash
   cd $HOME
   echo 'export PATH="/c/Ruby26/bin:$PATH"' >> $HOME/.bash_profile
   source $HOME/.bash_profile
   ```
 
-  確認します。
+  confirm
   ```bash
   ruby --version
   ```
 
-  上のコマンドで `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` のように出力されればOKです。
+  it is ok if you output like `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` this command
 
-  つぎにmrubyをインストールします。mruby2.xはまだmruby/cと統合されていないので、1.4.1を使用します。
+  Next install mruby. Since mruby 2.x is not integrated with mruby / c, we use 1.4.1.
   ```bash
   cd $HOME
   wget https://github.com/mruby/mruby/archive/1.4.1.zip
@@ -475,59 +473,57 @@ msys2_ruby = ERB.new <<~EOF
   ruby minirake
   ```
 
-  パスを通します。
+  Pass the path
   ```bash
   echo 'export PATH="$HOME/mruby-1.4.1/build/host/bin:$PATH"' >> $HOME/.bash_profile
   source $HOME/.bash_profile
   ```
 
-  確認します。
+  Confirm
   ```bash
   mrbc --version
   ```
 
-  上のコマンドで `mruby 1.4.1 (2018-4-27)` と出力されればOKです。
+  If you output `mruby 1.4.1 (2018-4-27)` by the above command, it is OK.
 
 EOF
 
 wsl_ruby = ERB.new <<~EOF
-  ### Rubyをインストール
+  ### Ruby Installation
 
-  rbenvをインストールします。
+  Install rbenv
   ```bash
   cd $HOME
   git clone https://github.com/rbenv/rbenv.git $HOME/.rbenv
   ```
 
-  パスを通すなどします。
+  I will pass the path
   ```bash
   echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.profile
   echo 'eval "$(rbenv init -)"' >> $HOME/.profile
   source .profile
   ```
 
-  ruby-buildをインストールします。
+  Install ruby-build
   ```bash
   mkdir -p "$(rbenv root)"/plugins
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
   ```
 
-  WSLにはシステムデフォルトのRubyがありません。mrubyのビルドにはCRubyが必要なので、まずはCRubyをインストールします。
-  非常に時間がかかりますので気長に実行してください。
+  There is no system default Ruby in WSL. Since you need CRuby to build mruby, first install CRuby.
+  It takes a very long time, so please be cautious.
   ```bash
   sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev
   rbenv install <%= cruby_version %>
   ```
 
-  たったいまインストールしたCRubyをグローバルデフォルトに設定します。
+  Set CRuby installed just now as global default.
   ```bash
   rbenv global <%= cruby_version %>
   ruby --version
   ```
 
-  上のコマンドで、 `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXXX) [x86_64-linux]` のように出力されればOKです。
-
-  mrubyをインストールします。現状、mruby-2.xはmruby/cには使えないので、1.4.1をインストールしてください。
+  Install mruby As of now, mruby-2.x can not be used for mruby/c, so please install 1.4.1.
   ```bash
   rbenv install mruby-1.4.1
   ```
@@ -537,9 +533,9 @@ EOF
 hello_world_esp = ERB.new <<~EOF
   ## Hello ESP32 World!
 
-  ESP32上で動作する Hello World プログラムをつくります。
+  Create a Hello World program that works on ESP32.
 
-  ESP32 & mruby/c用のアプリケーションテンプレートをGitHubからcloneします。
+  Clone the application template for ESP32 & mruby / c from GitHub.
 
   ```bash
   cd $HOME/esp
@@ -547,7 +543,7 @@ hello_world_esp = ERB.new <<~EOF
   cd hello-mrubyc-world-esp32
   ```
 
-  ディレクトリ構成を見てみましょう。 `mrblib/` の中にわれわれのRubyソースコードを書きます。 `main/` の中にはC言語のソースコードを書きます。
+  Let's look at the directory structure. Write our Ruby source code in `mrblib/`. Write the C source code in `main/`.
 
   ```bash
   ~/esp/hello-mrubyc-world-esp32$ tree -L 3
@@ -568,8 +564,9 @@ hello_world_esp = ERB.new <<~EOF
           8 directories, 4 files
   ```
 
-  3つのソースコードを以下のような内容に編集します。
-  すでに存在するファイルは上書きし、存在しないファイルは新規作成してください。
+  
+  Edit the three source code as follows.
+  Overwrite existing files and create new files that do not exist.
 
   `main/main.c`
   ```c
@@ -610,87 +607,82 @@ hello_world_esp = ERB.new <<~EOF
   end
   ```
 
-  ### ビルド
+  ### Build
 
-  `make` コマンドを入力すると、ビルドが始まります。
+  The build starts when you enter the `make` command.
 
-  ESPプロジェクトの初回の make 時には下の画像のような `make menuconfig` 相当の画面になります。エスケープキーを2回押すか、&lt;Exit&gt;を選択すればmenuconfigを終了できます。menuconfigは、プロジェクト（アプリケーション）ごとに毎回設定する必要があります。
-
-  ターミナル（ウインドウ）のサイズが小さすぎると「menuconfig画面をつくれない」という意味のエラーがでます。
-  ウインドウサイズを大きくして再度 `make` してください。
+  The first make of the ESP project will be a screen similar to `make menuconfig`, as shown in the image below. You can exit menuconfig by pressing the Escape key twice or selecting <Exit>. You need to set menuconfig for each project (application) every time.
+  If the size of the terminal (window) is too small, you will get an error saying "Can't create menuconfig screen".
+  Increase the window size and `make` again.
 
   ![](../images/menuconfig-01.png)
 
-  設定ファイルが自動で生成され（これによって次回の `make` コマンドでは設定画面が表示されなくなります。明示的に表示するためのコマンドが `make menuconfig` です）、プロジェクトのビルドが始まるはずです。下の画像のような出力で終了すれば正常です。
+  The configuration file should be generated automatically (this will cause the configuration screen to disappear on the next `make` command. The command to display explicitly is` make menuconfig`), and the project should begin to build. It is normal if it ends with the output like the following image.
 
   ![](../images/hello_world_build.png)
 
-  正常終了しなかった場合は、これまでの手順のどこかを抜かしたか、入力ミスなどで正しく手順を踏めていなくてエラーメッセージに気づかず進んでしまったことが考えられます。
+  If it did not end normally, it is possible that you skipped some part of the previous procedure or did not follow the procedure correctly due to a typo and proceed without noticing the error message.
 
-  次はついにESP32へのプログラム書き込みですが、その前にUSB接続を確認し、シリアルポートを設定しましょう。
-  WindowsとmacOSそれぞれについて説明します。
+  The next step is to write the program to ESP32, but before that, check the USB connection and set the serial port.
+  We will explain Windows and macOS respectively.
 
-### USB接続の確認とシリアルポート設定
+### USB connection check and serial port setting
 
 EOF
 
 win_usb_confirm = ERB.new <<~EOF
-  #### Windowsの場合：COMポート番号を確認
+  #### For Windows: Check the COM port number
 
-  「デバイスマネージャー」アプリを開き、その状態のままUSBケーブルのマイクロコネクタ側をESP32開発ボードに、タイプAコネクタをWindowsパソコンに接続します。
-
-  「USB to UART ブリッジドライバ」がインストール済みなので、画像のように「ポート（COMとLPT）」内に「Silicon Labs CP210x USB to UART Bridge (COM5)」のような項目が現れるはずです。名称は環境によって異なる可能性があります。
-
+   Open the "Device Manager" application and connect the micro connector side of the USB cable to the ESP32 development board and the type A connector to a Windows PC in that state.
+   Since "USB to UART bridge driver" is installed, items like "Silicon Labs CP210x USB to UART Bridge (COM5)" should appear in "Port (COM and LPT)" as shown in the image. The name may differ depending on the environment.
   ![](../images/device_manager-ja.png)
 
-  「(COM5)」の __最後の数字「5」__ が、みなさんの環境では異なる可能性があります。
-  この数字を覚えておいてください。
+  The last digit "5" of "(COM5)" may be different in your environment.
+  Please remember this number.
 
 EOF
 
 mac_usb_confirm = ERB.new <<~EOF
-  #### macOSの場合：シリアルポートのデバイスファイル名を確認
+  #### For macOS：Check the serial port device file name
 
-  USBポートにESP32開発ボードを接続していない状態で、 `ls -l /dev/cu.*` と打ってみてください。
-  つぎに、ESP32開発ボードをmacに接続した状態で、同じコマンドを打ってください。「USB to UART ブリッジドライバ」が正しくインストールできていれば、出力がひとつ増えるはずです。そしてそのデバイスファイルは「/dev/cu.SLAB_USBtoUART」のような名前であるはずです。
+  With the ESP32 development board not connected to the USB port, try typing `ls -l /dev/cu.*`.
+  Next, with the ESP32 development board connected to mac, type the same command. If "USB to UART bridge driver" is correctly installed, one more output should be added. And the device file should be named something like "/dev/cu.SLAB_USBtoUART".
 
-  この文字列をメモしておいてください。
+  Make a note of this string.
 
 EOF
 
 hello_world_esp_run = ERB.new <<~EOF
-  ### WindowsとmacOS共通：シリアルポートを設定
+  ### Windows & macOS common：Set Serial port
   ```bash
   make menuconfig
   ```
-  上記コマンドで設定画面を起動し、カーソルキーとエンターキーで「Serial flasher config」→「(/dev/ttyUSB0) Default serial port」と選択し、ポートを **下で説明する値** に変更してエンターキーで確定し、何度かエスケープキーを押すと保存するか確認されるので「&lt;Yes&gt;」を選択してください。
-
-  - macOS：先ほどメモをとった「/dev/cu.SLAB_USBtoUART」のような文字列
-  - WSL：「/dev/ttyS5」（最後の数字を先ほど確認したCOM番号と同じものに変更してください）
-  - MSYS2：「COM5」（先ほど確認した「COM名」と同じ文字列にする。WSLと異なり、 `/dev/` の部分は不要です）
+ Start the setting screen with the above command, select "Serial flasher config" → "(/dev/ttyUSB0) Default serial port" with the cursor key and the enter key, change the port to the value ** described below ** Confirm with the Enter key, and then press the Escape key several times to confirm if you want to save. Select "<Yes>".
+  - macOS：a string like 「/dev/cu.SLAB_USBtoUART」you took note of earlier
+  - WSL：「/dev/ttyS5」（Please change the last number to the same one as the COM number checked earlier）
+  - MSYS2：「COM5」（The same string as the "COM name" confirmed above. Unlike WSL, `/dev/` part is unnecessary）
 
   ![](../images/menuconfig-01.png)
   ![](../images/menuconfig-02.png)
   ![](../images/menuconfig-03.png)
   ![](../images/menuconfig-04.png)
 
-  ### プロジェクトを書き込み、実行
+  ### Write a project and execute
 
-  このコマンドでプロジェクトが書き込まれます。makeコマンドの一般的な動作と同様、プログラムファイルの更新日時から計算される依存関係上必要な場合は、ビルドが先に実行されます。
+  The project is written by this command. As with the general behavior of the make command, the build is executed first if necessary because of the dependencies calculated from the modification time of the program file.
   ```bash
   make flash
   ```
 
-  このコマンドでESP32がリブートしてファームウェアが先頭から実行され、実行中のデバッグ情報などが標準出力に書き出されます。
+  This command reboots ESP32 and executes the firmware from the beginning, and writes in-process debug information etc. to standard output.
   ```bash
   make monitor
   ```
 
-  どうでしょうか？　hello-mrubyc-world-posix（PC上のHello World）と同じように、1秒ごとに `Hello World!` が出力されたでしょうか？　うまく行かない場合は手順を再度見なおしてください。
+  How about that? Did you output `Hello World!` Every second as you did hello-mrubyc-world-posix (Hello World on PC)? If you are having trouble, please reconsider the procedure.
+  The console monitor (make monitor) of ESP-IDF can be terminated with `ctrl +]`.
 
-  ESP-IDFのコンソールモニタ（make monitor）は、 `ctrl + ]` で終了できます。
-
-  ちなみに上の2つのコマンドは以下のように一度に実行できます。
+  By the way, the above two commands can be executed at one time as follows.
   ```bash
   make flash monitor
   ```
@@ -699,35 +691,37 @@ EOF
 
 
 multi_task = ERB.new <<~EOF
-  ## mruby/cでマルチタスク
+  ## Multitasking with mruby/c
 
-  前回まではマイコンや周辺機器の基礎的な使い方をみてきました。
-  最終回は、mruby/cの特長のひとつであるマルチタスク機能を利用するプロジェクトをつくります。
+  Until the last time, I have seen basic usage of microcontrollers and peripherals.
+  The final session will create a project that uses the multitasking function that is one of the features of mruby/c.
 
-  ### 使用パーツ
-  - 赤色LED
-  - サーミスタ（103AT）
-  - 抵抗器330Ω
-  - 抵抗器10kΩ
-  - ジャンパーピン
-  - ブレッドボード
+  ### Used parts
+  - Red LED
+  - Thermistor（103AT）
+  - Resistor 330Ω
+  - Resistor 10kΩ
+  - Jumper pin
+  - bread board
 
-  ### タスクとは
+  ### What is a task?
 
-  LinuxやWindowsで言うところの「スレッド」とほぼ同じ意味です。
-  OSがスレッドごとにCPU時間の割り当てをコントロールし、複数のスレッド（処理のまとまり）を同時的に進行させる機能またはその動作状態のことをマルチスレッドと呼びます。
+  It has almost the same meaning as "thread" in Linux and Windows.
+  The function that controls the allocation of CPU time for each thread and allows multiple threads (processing blocks) to proceed simultaneously is called multithreading.
 
-  RTOS（リアルタイムOS）が載っているマイコンでもOSがマルチタスクをコントロールしますが、mruby/cにはOSなしでマルチタスクを実現する仕組みが含まれており、このことによって省メモリでありながら実用性の高いファームウェアを開発しやすくなっています。
+  Although the OS controls multitasking even on microcomputers that have RTOS (real-time OS), mruby / c includes a mechanism to realize multitasking without an OS, which makes it possible to save memory while using it It is easy to develop high quality firmware.
 
-  ※本記事のプログラムはESPのリアルタイムOSを使用しています。ただし、マルチタスクはmruby/cの機能によって実現しています。
 
-  ### ブレッドボードに配線する
+  ※The program in this article uses ESP's real time OS. However, multitasking is realized by the mruby/c function.
+
+  ### Wire to the breadboard
 
   ![](../images/breadboard_multi_tasks.png)
 
-  前回までのLED回路とサーミスタ回路を組み合わせたものです。
+  
+  It combines the LED circuit and thermistor circuit up to the previous time.
 
-  ### プログラムを書く
+  ### Write a program
 
   ```bash
   cd $HOME/esp
@@ -735,7 +729,7 @@ multi_task = ERB.new <<~EOF
   cd multi-tasks
   ```
 
-  まずは、前回のプロジェクト（measuring-temperature）と同様に `MRBC_USE_MATH` を有効にしましょう。
+  First, let's enable `MRBC_USE_MATH` as in the previous project (measuring-temperature).
 
   `main/main.c`
   ```c
@@ -885,70 +879,71 @@ multi_task = ERB.new <<~EOF
   end
   ```
 
-  ### 解説
+  ### Comments
 
-  うまく実行できたでしょうか？　サーミスタを指で触って温度が30℃を超えると、LEDが点滅します。
+  Were you able to do it well? When the temperature exceeds 30°C by touching the thermistor with a finger, the LED blinks
 
   ![](../images/capture_multi_tasks.png)
 
-  今回のプロジェクトには2つの無限ループ（master.rbとslave.rb）があり、それらがグローバル変数 `$status` を通して連携しています。
+  There are two infinite loops (master.rb and slave.rb) in this project, which are linked through the global variable `$ status`.
 
-  このように複数のタスクがユーザからの入力を待ち受けたり、表示器をコントロールしたり、ネットワークの接続状況やリクエストを監視したりして相互に連携するのが、ファームウェア開発の面白さです。
-  mruby/cを使えばこのようなマルチタスクを容易につくることができ、さらにRubyという言語の高い生産性を組み合わせられることがおわかりいただけたのではないかと思います。
-
-  本記事はこれにて終了です。お付き合いありがとうございました。
+  It is the fun of firmware development that multiple tasks wait for input from the user, control the display, monitor the network connection status and requests, and cooperate with each other.
+  If you use mruby / c, you can easily create such multitasks, and you may also know that you can combine the high productivity of the Ruby language.
+  
+  This article is the end of this. thank you for your company.
 
 EOF
 
 measuring_temperature = ERB.new <<~EOF
-  ## 温度測定
+  ## Temperature measurement
 
-  今回は、サーミスタを使用して温度を測定します。
+  This time, the temperature is measured using a thermistor.
 
-  ### 使用パーツ
-  - サーミスタ（103AT）
-  - 抵抗器10kΩ
-  - ブレッドボード
+  ### Used parts
+  - Thermistor（103AT）
+  - Resistor 10kΩ
+  - bread board
 
-  ### サーミスタとは
+  ### What is a thermistor?
 
-  温度によって抵抗値が変動する素子です。その抵抗値と温度の関係は下のような近似式で表現できます。
+  It is an element whose resistance varies with temperature. The relation between the resistance value and the temperature can be expressed by the following approximate expression.
 
   ![](../images/thermistor_approximation_1.png)
 
-  これをTについて解くとこうなります。
+  This is solved for T.
 
   ![](../images/thermistor_approximation_2.png)
 
-  下図はデータシートの一部です。値BはB定数と呼ばれ、サーミスタ素子ごとに決まった値があります。
-  Toは25℃です。
-  Rrefは回路ごとに任意に決めてよく、ここでは10kΩとします。
+  The figure below is a part of the data sheet. The value B is called the B constant and has a fixed value for each thermistor element.
+  To is 25℃
+  Rref may be arbitrarily determined for each circuit, and here is 10kΩ.
 
   ![](../images/thermistor_datasheet.png)
 
-  _出典 http://akizukidenshi.com/download/ds/semitec/at-thms.pdf_
+  Source: http://akizukidenshi.com/download/ds/semitec/at-thms.pdf_
 
-  あとはRつまりサーミスタの抵抗値がわかれば、温度Tを求めることができます。
-  ではどうやってRを測定するのでしょうか？　下図をご覧ください。
+  After that, if you know the resistance value of R, that is, the thermistor, you can find the temperature T.
+  So how do you measure R? Please see the figure below.
 
   ![](../images/thermistor_circuit_resistance.png)
 
-  この図の電圧値Vrefがわかればよいことを示しています。よく見ると、これもオームの法則ですね。
+  It indicates that the voltage value Vref in this figure should be known. If you look closely, this is also Ohm's law.
 
-  ESP32には（そして他の多くのワンチップマイコンにも）、ADC（アナログ・デジタル・コンバータ）が搭載されており、Vrefの値を測定できます。
-  ちなみにラズパイにはADCが搭載されていませんので、別途ADCチップを買ってきて回路を組む必要があります。
 
-  ### ブレッドボードに配線する
+  The ESP32 (and many other one-chip microcontrollers) has an ADC (analog-to-digital converter) that can measure the value of Vref.
+  By the way, as there is no ADC installed in Las Paz, it is necessary to buy a separate ADC chip and build a circuit.
 
-  ESP32開発ボードと抵抗器、サーミスタをブレッドボードで接続しましょう。青い素子がサーミスタで、方向の決まりはありません。
+  ### Wire to the breadboard
+
+  Connect the ESP32 development board with resistors and thermistors on a breadboard. The blue element is a thermistor, and there is no rule of direction.
 
   ![](../images/breadboard_thermistor.png)
 
-  回路図と見比べることで、「IO0」ピンを3.3Vに固定し、「IO4」ピンがVrefを計測するということを理解できると思います。
+  By comparing with the circuit diagram, you can understand that the “IO0” pin is fixed at 3.3 V and the “IO4” pin measures Vref.
 
-  ### プログラムを書く
+  ### Write a program
 
-  いままでのハンズ・オンと同様にテンプレートをcloneします。
+  The template is cloned in the same way as the previous hands-on.
 
   ```bash
   cd $HOME/esp
@@ -1054,92 +1049,93 @@ measuring_temperature = ERB.new <<~EOF
   end
   ```
 
-  ### Mathクラスを有効化
+  ### Enable Math class
 
-  対数を計算するために、mruby/cのMathクラス（数学計算のためのライブラリ）を有効にしなければなりません。デフォルトではオフになっているためです。
+  In order to calculate the logarithm, you need to activate the mruby/c Math class (library for mathematical calculations). It is off by default.
 
-  `components/mrubyc/mrubyc_src/vm_config.h` を開き、この行を探し、
+  Open`components/mrubyc/mrubyc_src/vm_config.h` and find the following line
 
   ```c
   #define MRBC_USE_MATH 0
   ```
 
-  以下のように修正してください。0を1にするだけです。
+  please correct as follows. Set 0 to 1
 
   ```c
   #define MRBC_USE_MATH 1
   ```
 
-  ### ビルド、実行
+  ### Build, Run
 
-  もちろん `make flash monitor` で実行できます（menuconfig画面のシリアルポート設定もお忘れなく）。
+  Of course you can do this with `make flash monitor` (and don't forget to set the serial port on the menuconfig screen).
 
-  うまくいけば、1秒ごとに温度が表示されるはずです。
+
+  Hopefully, the temperature should be displayed every second.
 
   ![](../images/capture_measuring_temperature.png)
 
 EOF
 
 led_blinking = ERB.new <<~EOF
-  ## Lチカ（発光ダイオード点滅）
+  ## blink LED (light emitting diode blinks)
 
-  マイコン界におけるLチカは、ソフトウェア界におけるHello Worldのようなものです。LEDを光らせることができれば、あなたも立派なマイコン刑事（デカ）です。
+  Blinking LED in the microcontroller world is like Hello World in the software world. If you can light the LED, you are also a good microcomputer detective.
 
-  ### 使用パーツ
-  - 赤色LED
-  - 抵抗器330Ω
-  - ジャンパーピン
-  - ブレッドボード
+  ### Used parts
+  - Red LED
+  - 330Ω resistor
+  - Jumper pin
+  - bread board
 
-  ### オームの法則
+  ### Ohm's Law
 
-  LEDを光らせるためには基礎的な電気知識が必要です。下の写真を見てください。
+  Basic electrical knowledge is required to make the LED glow. Look at the picture below.
+
 
   ![](../images/resistor.jpg)
 
-  10キロオーム（=10000オーム）の抵抗（R）の両端に3ボルトの電位差（V）があるとき、流れる電流（I）は0.3ミリアンペアです。
-  これはオームの法則の基本式 `V = I * R` を変形して得られる `I = V / R` から計算できます。
+  When there is a potential difference (V) of 3 volts across a 10 kiloohm (= 10000 ohm) resistance (R), the current (I) flowing is 0.3 milliamps.
+  This can be calculated from `I = V / R` which is obtained by transforming the basic equation `V = I * R` of Ohm's law.
 
-  次に、LEDのデータシートの一部を見てみましょう。
-  Vfというのが、LEDの両端に発生する電位差です。ここではVfが2.1Vの赤色LEDを使います。
+  Next, let's look at part of the LED data sheet.
+  Vf is the potential difference generated at both ends of the LED. Here, Vf uses a 2.1V red LED.
 
   ![](../images/led_datasheet.png)
 
-  _出典 http://akizukidenshi.com/download/ds/optosupply/OSXXXX3Z74A_VER_A1.pdf_
+  Source: http://akizukidenshi.com/download/ds/optosupply/OSXXXX3Z74A_VER_A1.pdf_
 
-  このLEDと330Ωの抵抗器を直列に接続し、回路全体に3.3Vの電圧をかけます。
+  Connect this LED and a 330Ω resistor in series, and apply 3.3V across the circuit.
 
   ![](../images/led_circuit.png)
 
-  LEDは常に2.1Vの電位差を生む（←細かい議論を省略していることはおわかりいただけると思います）ので、抵抗器には1.2Vの電圧がかかります。
-  オームの法則 (3.3 - 2.1) / 330 = 0.0036 より、電流は3.6mAになることがわかります。
+  Since the LED always produces a potential difference of 2.1 V (I think you can see that we have omitted the detailed discussion), the resistor is charged with a voltage of 1.2 V.
+  According to Ohm's law (3.3-2.1) / 330 = 0.0036, the current is 3.6 mA.
 
-  ### ブレッドボードに配線する
+  ### Wire to the breadboard
 
-  ESP32開発ボードと抵抗器、LED、ジャンパワイヤをブレッドボードで接続しましょう。
-  LEDは一般的に、長いピンがアノード（陽極）なので、長いピンにプラスの電位がかかるように接続してください。
+  Connect the ESP32 development board with resistors, LEDs and jumpers with a breadboard.
+  Since LEDs generally have the long pin as the anode, connect the long pin to a positive potential.
 
-  上の回路図では、アノードが2番ピン、カソードが1番ピンです。
-  今回の回路の場合は間違えて逆に挿しても壊れませんので、光らなければ逆にしてみるというくらいの気楽さでOKです。
+  In the schematic above, the anode is pin 2 and the cathode is pin 1.
+  In the case of this circuit, it will not be broken even if you make a mistake and insert it in reverse.
 
   ![](../images/LED.png)
 
-  このブレッドボード図の場合、右にアノード（陽極）、左にカソード（陰極）を挿します。
+  In the case of this breadboard diagram, insert the anode on the right and the cathode on the left.
 
   ![](../images/blinking_led_breadboard.png)
 
-  上の配線図と下の写真は、おなじ接続を表現しています。
+  The upper wiring diagram and the lower photo represent the same connection.
 
   ![](../images/photo_led_blinking.jpg)
 
-  ESP32の「IO19」ピンに3.3Vが印加されます。
-  となりの「GND」ピンはグランドつまり常に0Vになるピンです。ほかにもいくつかGNDピンがあることや、3V3（3.3Vのことです）や5Vと書かれたピンがあることも確認しておきましょう。
-  USBケーブルから供給される電源電圧は5Vです。
-  開発ボード内の降圧回路がESP32の標準動作電圧である3.3Vに降圧しています。
+  3.3V is applied to ESP32's "IO19" pin.
+  The power supply voltage supplied from the USB cable is 5V.
+  The buck circuit in the development board is bucked to 3.3 V which is the standard operating voltage of ESP32.
 
-  ### プログラムを書く
+  ### Write a program
 
-  いままでのハンズ・オンと同様にテンプレートをcloneします。
+  The template is cloned in the same way as the previous hands-on.
 
   ```bash
   cd $HOME/esp
@@ -1217,11 +1213,11 @@ led_blinking = ERB.new <<~EOF
   end
   ```
 
-  ### ビルド、実行
+  ### Build, Run
 
-  お馴染みの `make flash monitor` で実行できます（menuconfig画面のシリアルポート設定もお忘れなく）。
+  You can run it with the familiar `make flash monitor` (and don't forget to set the serial port on the menuconfig screen).
 
-  うまくいけば、1秒点灯し、1秒消灯する、という動作を繰り返します。
+  Hopefully, it will light up for 1 second and turn off for 1 second.
 
 EOF
 
@@ -1230,7 +1226,7 @@ mac = String.new
 wsl = String.new
 msys2 = String.new
 
-title = ERB.new("# ESP32 + mruby/c開発のための環境構築 - <%= platform %>\n\n")
+title = ERB.new("# Setup environment for ESP32 + mruby/c development - <%= platform %>\n\n")
 
 cruby_version = "2.6.2"
 
@@ -1270,12 +1266,12 @@ end
 
 platform = "WSL"
 File.open("ja/doc_5_hello_world_posix.md", "w") do |f|
-  f.puts "# ハンズ・オン - 1\n\n"
+  f.puts "# hands-on - 1\n\n"
   f.puts hello_world_posix.result(binding)
 end
 
 File.open("ja/doc_6_hello_world_esp.md", "w") do |f|
-  f.puts "# ハンズ・オン - 2\n\n"
+  f.puts "# hands-on - 2\n\n"
   f.puts hello_world_esp.result(binding)
   f.puts win_usb_confirm.result(binding)
   f.puts mac_usb_confirm.result(binding)
@@ -1284,7 +1280,7 @@ end
 
 %w(led_blinking measuring_temperature multi_task).each_with_index do |handson, index|
   File.open("ja/doc_#{index + 7}_#{handson}.md", "w") do |f|
-    f.puts "# ハンズ・オン - #{index + 3}\n\n"
+    f.puts "# hands-on - #{index + 3}\n\n"
     f.puts eval(handson).result(binding)
   end
 end
