@@ -2,7 +2,7 @@ require 'erb'
 
 
 introduction = ERB.new <<~EOF
-  # Environment construction for ESP32 + mruby/c development-Introduction
+  # Environment construction for ESP32 + mruby/c development - Introduction
 
   Convert mruby source code (extension ".rb") to intermediate byte code of extension ".c" by using  mrbc (mruby compiler).The basic flow of mruby/c application development is to operate it (and the mruby/c runtime program) from "main.c".
 
@@ -10,8 +10,8 @@ introduction = ERB.new <<~EOF
   
   ESP-IDF contains a library that can be used for ESP firmware development and supports the creation of executable files.
 
-  In the following "ESP development environment" and its construction is explained
-  "ESP development environment" : development environment in which ESP-IDF and related tools are setup
+  The followings are instructions how to construct "ESP development environment"*.
+  *"ESP development environment" : development environment in which ESP-IDF and related tools are setup.
   
   ## Setting up Development Environment
 
@@ -36,16 +36,16 @@ introduction = ERB.new <<~EOF
 
   ### Linux Distributions
   Although we do not have environment configuration manual for Linux, it is not difficult for programmers who use Linux as a host OS.
-  refer to Ubuntu startup in the WSL manual for Windows and  build the ESP development environment.
+  Refer to Ubuntu startup in the WSL manual for Windows and  build the ESP development environment.
 
   ## About Virtual Environment, Docker
-  About Virtual Box: It is possible to build ESP development environment in VirtualBox running on  Linux or Windows 10 .But there are reports that USB port is not always recognized properly. 
+  About Virtual Box: It is possible to build ESP development environment in VirtualBox running on Linux on Windows 10 Professional. But there are some reports that USB port is not always recognized properly. 
 
   Therefore, this manual assumes that you build an ESP development environment on the host OS.
 
   If you want to use a virtual environment, please create an ESP development environment on the guest OS after creating the environment on the host OS first in order to proceed the workshop smoothly. And please share information about how you can and can not do it well.
 
-  Also, Docker seems to have problems with USB drivers in general, so please think that it can not be used (please try and let me know if you can use it).
+  Also, Docker seems to have problems with USB drivers in general, so please think that it can not be used (but please try if you are interested in it and let me know if you can use it).
 EOF
 
 about_ruby = ERB.new <<~EOF
@@ -64,7 +64,7 @@ EOF
 mac_usb = ERB.new <<~EOF
   ## USB Driver Installation
 
-  Install「USB to UART Bridge Driver」
+  Install「USB to UART Bridge Driver」.
   Download and install the one that is compatible with your OS from the following page.
   https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
 
@@ -117,7 +117,7 @@ EOF
 wsl_usb = ERB.new <<~EOF
   ## About USB driver
   
-  The ESP32 Development Kit [ESP32-DevKitC] (https://www.espressif.com/en/products/hardware/esp32-devkitc/overview) to be used in this workshop has a serial-to-USB converter chip called "CP2102N". This driver has to be installed on Windows
+  The ESP32 Development Kit [ESP32-DevKitC] (https://www.espressif.com/en/products/hardware/esp32-devkitc/overview) to be used in this workshop has a serial-to-USB converter chip called "CP2102N". This driver has to be installed on Windows.
   If you can not enable the Pololu driver described below, give up the WSL and select the MSYS2 environment.
   Also, if your operating system is other than the 64-bit version of Windows 10, you will build an MSYS2 environment anyway, so you can use either USB driver.
   As of March 2019, the drivers provided by Silicon Labs can not communicate as expected by WSL and ESP32. It did not work at least in my environment. There is no problem if it is MSYS2.
@@ -145,7 +145,7 @@ wsl_usb = ERB.new <<~EOF
   pnputil -e
   ```
   copy and paste all into a text editor to find information about the driver.
-  It looks like my environment where both drivers were installed.
+  It looks as follows in my environment where both drivers were installed.
   `oem9.inf` is a Silicon Labs system definition file, and` oem158.inf` is a Pololu system definition file.
   Notice the difference in the value of __Driver date and version__.
   ```bash
@@ -163,7 +163,7 @@ wsl_usb = ERB.new <<~EOF
   ```
 
   
-  In this situation, the newer Silicon Labs driver will be used and this should be removed.
+  In this situation, the newer Silicon Labs driver will be used, so this should be removed.
 
   ### Remove the device driver completely
 
@@ -173,8 +173,8 @@ wsl_usb = ERB.new <<~EOF
 
   ![](../images/uninstall_device.png)
 
-  Then start Windows Powershell or Command Prompt (CMD) as __administrator __ and delete the system definition with the following command.
-  Note that the file name `oem9.inf` depends on the __environment__.
+  Then start Windows Powershell or Command Prompt (CMD) __as administrator__ and delete the system definition with the following command.
+  Note that the file name `oem9.inf` would be different __depends on the environment__.
   ```bash
   pnputil -d oem9.inf
   ```
@@ -206,7 +206,7 @@ msys2_intro = ERB.new <<~EOF
   ※If your operating system is a 64-bit version of Windows 10 and you have enabled the Pololu USB driver, we recommend that you build a WSL environment.
 
   
-  MSYS2 is an integrated package for emulating Unix command line environment on Windows. Since Espressif offers an all-in-one ZIP archive with MSYS2 with various necessary tools set up, using it as it is is the easiest development environment.
+  MSYS2 is an integrated package for emulating Unix command line environment on Windows. Since Espressif offers an all-in-one ZIP archive with MSYS2 with various necessary tools set up, using it as it is is the easiest way to build the development environment.
 
   
   If you would like to install dependent tools one by one on "raw MSYS2", you can find the information on the following page. However, I have not verified.
@@ -438,7 +438,7 @@ msys2_ruby = ERB.new <<~EOF
   Double-click the downloaded file, select "I accept the license" and press "NEXT".
   ![](../images/rubyinstaller2-01.png)
 
-  Since "Use UTF-8 as default external encoding." Will be unchecked, check it and press "Install" (Encoding is not related to this workshop, but used for other purposes Sometimes this looks better).
+  Since "Use UTF-8 as default external encoding." would be unchecked, check it and press "Install" (Encoding is not related to this workshop, but used for other purposes Sometimes this looks better).
   ![](../images/rubyinstaller2-02.png)
 
   Confirm that "Run 'ridk ..." is checked, and press "Finish".
@@ -497,7 +497,7 @@ wsl_ruby = ERB.new <<~EOF
   git clone https://github.com/rbenv/rbenv.git $HOME/.rbenv
   ```
 
-  I will pass the path
+  Pass the path
   ```bash
   echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.profile
   echo 'eval "$(rbenv init -)"' >> $HOME/.profile
@@ -511,7 +511,7 @@ wsl_ruby = ERB.new <<~EOF
   ```
 
   There is no system default Ruby in WSL. Since you need CRuby to build mruby, first install CRuby.
-  It takes a very long time, so please be cautious.
+  It takes a very long time, so please do not worry.
   ```bash
   sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev
   rbenv install <%= cruby_version %>
@@ -523,7 +523,9 @@ wsl_ruby = ERB.new <<~EOF
   ruby --version
   ```
 
-  Install mruby As of now, mruby-2.x can not be used for mruby/c, so please install 1.4.1.
+  上のコマンドで、 ruby 2.6.2pXX (2019-XX-XX revision XXXXXX) [x86_64-linux] のように出力されればOKです。
+
+  Install mruby. As of now, mruby-2.x can not be used for mruby/c, so please install 1.4.1.
   ```bash
   rbenv install mruby-1.4.1
   ```
@@ -635,7 +637,7 @@ win_usb_confirm = ERB.new <<~EOF
 
    Open the "Device Manager" application and connect the micro connector side of the USB cable to the ESP32 development board and the type A connector to a Windows PC in that state.
    Since "USB to UART bridge driver" is installed, items like "Silicon Labs CP210x USB to UART Bridge (COM5)" should appear in "Port (COM and LPT)" as shown in the image. The name may differ depending on the environment.
-  ![](../images/device_manager-ja.png)
+  ![](../images/device_manager-en.png)
 
   The last digit "5" of "(COM5)" may be different in your environment.
   Please remember this number.
@@ -1254,23 +1256,23 @@ wsl << wsl_idf.result(binding)
 wsl << about_ruby.result(binding)
 wsl << wsl_ruby.result(binding)
 
-File.open("ja/doc_1_introduction.md", "w") do |f|
+File.open("en/doc_1_introduction.md", "w") do |f|
   f.puts introduction.result(binding)
 end
 
 %w(mac wsl msys2).each_with_index do |platform, index|
-  File.open("ja/doc_#{index + 2}_#{platform}.md", "w") do |f|
+  File.open("en/doc_#{index + 2}_#{platform}.md", "w") do |f|
     f.puts(eval(platform))
   end
 end
 
 platform = "WSL"
-File.open("ja/doc_5_hello_world_posix.md", "w") do |f|
+File.open("en/doc_5_hello_world_posix.md", "w") do |f|
   f.puts "# hands-on - 1\n\n"
   f.puts hello_world_posix.result(binding)
 end
 
-File.open("ja/doc_6_hello_world_esp.md", "w") do |f|
+File.open("en/doc_6_hello_world_esp.md", "w") do |f|
   f.puts "# hands-on - 2\n\n"
   f.puts hello_world_esp.result(binding)
   f.puts win_usb_confirm.result(binding)
@@ -1279,7 +1281,7 @@ File.open("ja/doc_6_hello_world_esp.md", "w") do |f|
 end
 
 %w(led_blinking measuring_temperature multi_task).each_with_index do |handson, index|
-  File.open("ja/doc_#{index + 7}_#{handson}.md", "w") do |f|
+  File.open("en/doc_#{index + 7}_#{handson}.md", "w") do |f|
     f.puts "# hands-on - #{index + 3}\n\n"
     f.puts eval(handson).result(binding)
   end
