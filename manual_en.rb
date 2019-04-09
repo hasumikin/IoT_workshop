@@ -731,7 +731,7 @@ multi_task = ERB.new <<~EOF
   cd multi-tasks
   ```
 
-  First, let's enable `MRBC_USE_MATH` as in the previous project (measuring-temperature).
+  First, let's enable `MRBC_USE_MATH` as in the previous project (taking-temperature).
 
   `main/main.c`
   ```c
@@ -896,10 +896,10 @@ multi_task = ERB.new <<~EOF
 
 EOF
 
-measuring_temperature = ERB.new <<~EOF
-  ## Temperature measurement
+taking_temperature = ERB.new <<~EOF
+  ## Taking temperature
 
-  This time, the temperature is measured using a thermistor.
+  This time, the temperature is took using a thermistor.
 
   ### Used parts
   - Thermistor（103AT）
@@ -949,8 +949,8 @@ measuring_temperature = ERB.new <<~EOF
 
   ```bash
   cd $HOME/esp
-  git clone https://github.com/hasumikin/mrubyc-template-esp32.git measuring-temperature
-  cd measuring-temperature
+  git clone https://github.com/hasumikin/mrubyc-template-esp32.git taking-temperature
+  cd taking-temperature
   ```
 
   `main/main.c`
@@ -1074,7 +1074,7 @@ measuring_temperature = ERB.new <<~EOF
 
   Hopefully, the temperature should be displayed every second.
 
-  ![](../images/capture_measuring_temperature.png)
+  ![](../images/capture_taking_temperature.png)
 
 EOF
 
@@ -1280,7 +1280,7 @@ File.open("en/doc_6_hello_world_esp.md", "w") do |f|
   f.puts hello_world_esp_run.result(binding)
 end
 
-%w(led_blinking measuring_temperature multi_task).each_with_index do |handson, index|
+%w(led_blinking taking_temperature multi_task).each_with_index do |handson, index|
   File.open("en/doc_#{index + 7}_#{handson}.md", "w") do |f|
     f.puts "# hands-on - #{index + 3}\n\n"
     f.puts eval(handson).result(binding)

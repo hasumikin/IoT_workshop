@@ -734,7 +734,7 @@ multi_task = ERB.new <<~EOF
   cd multi-tasks
   ```
 
-  まずは、前回のプロジェクト（measuring-temperature）と同様に `MRBC_USE_MATH` を有効にしましょう。
+  まずは、前回のプロジェクト（taking-temperature）と同様に `MRBC_USE_MATH` を有効にしましょう。
 
   `main/main.c`
   ```c
@@ -899,7 +899,7 @@ multi_task = ERB.new <<~EOF
 
 EOF
 
-measuring_temperature = ERB.new <<~EOF
+taking_temperature = ERB.new <<~EOF
   ## 温度測定
 
   今回は、サーミスタを使用して温度を測定します。
@@ -951,8 +951,8 @@ measuring_temperature = ERB.new <<~EOF
 
   ```bash
   cd $HOME/esp
-  git clone https://github.com/hasumikin/mrubyc-template-esp32.git measuring-temperature
-  cd measuring-temperature
+  git clone https://github.com/hasumikin/mrubyc-template-esp32.git taking-temperature
+  cd taking-temperature
   ```
 
   `main/main.c`
@@ -1075,7 +1075,7 @@ measuring_temperature = ERB.new <<~EOF
 
   うまくいけば、1秒ごとに温度が表示されるはずです。
 
-  ![](../images/capture_measuring_temperature.png)
+  ![](../images/capture_taking_temperature.png)
 
 EOF
 
@@ -1281,7 +1281,7 @@ File.open("ja/doc_6_hello_world_esp.md", "w") do |f|
   f.puts hello_world_esp_run.result(binding)
 end
 
-%w(led_blinking measuring_temperature multi_task).each_with_index do |handson, index|
+%w(led_blinking taking_temperature multi_task).each_with_index do |handson, index|
   File.open("ja/doc_#{index + 7}_#{handson}.md", "w") do |f|
     f.puts "# ハンズ・オン - #{index + 3}\n\n"
     f.puts eval(handson).result(binding)
