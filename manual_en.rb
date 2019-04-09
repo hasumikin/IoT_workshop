@@ -523,7 +523,7 @@ wsl_ruby = ERB.new <<~EOF
   ruby --version
   ```
 
-  上のコマンドで、 ruby 2.6.2pXX (2019-XX-XX revision XXXXXX) [x86_64-linux] のように出力されればOKです。
+  succeeded if following output is obtained - ruby 2.6.2pXX (2019-XX-XX revision XXXXXX) [x86_64-linux] 
 
   Install mruby. As of now, mruby-2.x can not be used for mruby/c, so please install 1.4.1.
   ```bash
