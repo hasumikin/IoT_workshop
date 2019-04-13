@@ -353,7 +353,7 @@ EOF
 hello_world_posix = ERB.new <<~EOF
   ## Hello mruby/c World!
 
-  mruby / c runs not only on microcomputers but also on personal computers (POSIX). Let's output Hello World.
+  mruby / c runs not only on microcontrollers but also on personal computers (POSIX). Let's output Hello World.
 
   I have prepared a repository that already has Makefile, main.c, etc. Please git clone.
 
@@ -681,7 +681,7 @@ hello_world_esp_run = ERB.new <<~EOF
   make monitor
   ```
 
-  How about that? Did you output `Hello World!` Every second as you did hello-mrubyc-world-posix (Hello World on PC)? If you are having trouble, please reconsider the procedure.
+  How was the result? Did you output `Hello World!` every second as you did hello-mrubyc-world-posix (Hello World on PC)? If you are having trouble, please reconsider the procedure.
   The console monitor (make monitor) of ESP-IDF can be terminated with `ctrl +]`.
 
   By the way, the above two commands can be executed at one time as follows.
@@ -695,7 +695,7 @@ EOF
 multi_task = ERB.new <<~EOF
   ## Multitasking with mruby/c
 
-  Until the last time, I have seen basic usage of microcontrollers and peripherals.
+  In the previous hands-ons, we have learned basic usage of microcontrollers and peripherals.
   The final session will create a project that uses the multitasking function that is one of the features of mruby/c.
 
   ### Used parts
@@ -711,7 +711,7 @@ multi_task = ERB.new <<~EOF
   It has almost the same meaning as "thread" in Linux and Windows.
   The function that controls the allocation of CPU time for each thread and allows multiple threads (processing blocks) to proceed simultaneously is called multithreading.
 
-  Although the OS controls multitasking even on microcomputers that have RTOS (real-time OS), mruby / c includes a mechanism to realize multitasking without an OS, which makes it possible to save memory while using it It is easy to develop high quality firmware.
+  Although the OS controls multitasking even on microcontrollers that have RTOS (real-time OS), mruby / c includes a mechanism to realize multitasking without an OS, which makes easier to develop practical farmwares with small memory usages.
 
 
   ※The program in this article uses ESP's real time OS. However, multitasking is realized by the mruby/c function.
@@ -889,10 +889,10 @@ multi_task = ERB.new <<~EOF
 
   There are two infinite loops (master.rb and slave.rb) in this project, which are linked through the global variable `$ status`.
 
-  It is the fun of firmware development that multiple tasks wait for input from the user, control the display, monitor the network connection status and requests, and cooperate with each other.
-  If you use mruby / c, you can easily create such multitasks, and you may also know that you can combine the high productivity of the Ruby language.
+  It is the interesting part of firmware development that multiple tasks wait for input from the user, control the display, monitor the network connection status and requests, and cooperate with each other.
+  If you use mruby / c, you can easily create such multitasks, and you may also realized that you can combine the high productivity of the Ruby language.
   
-  This article is the end of this. thank you for your company.
+  THE END.  I hope you enjoyed this article.  Thank you!
 
 EOF
 
@@ -917,14 +917,14 @@ taking_temperature = ERB.new <<~EOF
   ![](../images/thermistor_approximation_2.png)
 
   The figure below is a part of the data sheet. The value B is called the B constant and has a fixed value for each thermistor element.
-  To is 25℃
+  To is 25℃.
   Rref may be arbitrarily determined for each circuit, and here is 10kΩ.
 
   ![](../images/thermistor_datasheet.png)
 
   Source: http://akizukidenshi.com/download/ds/semitec/at-thms.pdf_
 
-  After that, if you know the resistance value of R, that is, the thermistor, you can find the temperature T.
+  After that, if you know R, the resistance value of the thermistor, you can find the temperature T.
   So how do you measure R? Please see the figure below.
 
   ![](../images/thermistor_circuit_resistance.png)
@@ -1072,7 +1072,7 @@ taking_temperature = ERB.new <<~EOF
   Of course you can do this with `make flash monitor` (and don't forget to set the serial port on the menuconfig screen).
 
 
-  Hopefully, the temperature should be displayed every second.
+  If you succeed, the temperature should be displayed every second.
 
   ![](../images/capture_taking_temperature.png)
 
@@ -1081,7 +1081,7 @@ EOF
 led_blinking = ERB.new <<~EOF
   ## blink LED (light emitting diode blinks)
 
-  Blinking LED in the microcontroller world is like Hello World in the software world. If you can light the LED, you are also a good microcomputer detective.
+  Blinking LED in the microcontroller world is like Hello World in the software world. If you can light the LED, you are also a good microcontroller detective.
 
   ### Used parts
   - Red LED
@@ -1119,7 +1119,7 @@ led_blinking = ERB.new <<~EOF
   Since LEDs generally have the long pin as the anode, connect the long pin to a positive potential.
 
   In the schematic above, the anode is pin 2 and the cathode is pin 1.
-  In the case of this circuit, it will not be broken even if you make a mistake and insert it in reverse.
+  In the case of this circuit, it will not be broken even if you make a mistake and insert it in reverse, so don't worry.  If it does not work, just try the other side.
 
   ![](../images/LED.png)
 
@@ -1131,7 +1131,7 @@ led_blinking = ERB.new <<~EOF
 
   ![](../images/photo_led_blinking.jpg)
 
-  3.3V is applied to ESP32's "IO19" pin.
+  3.3V is applied to ESP32's "IO19" pin. The "GND" pin next to it is the ground pin, which is always 0V.  Confirm there are some other GND pins, 3V3 pin (which means 3.3V), and 5V pin.
   The power supply voltage supplied from the USB cable is 5V.
   The buck circuit in the development board is bucked to 3.3 V which is the standard operating voltage of ESP32.
 
@@ -1219,7 +1219,7 @@ led_blinking = ERB.new <<~EOF
 
   You can run it with the familiar `make flash monitor` (and don't forget to set the serial port on the menuconfig screen).
 
-  Hopefully, it will light up for 1 second and turn off for 1 second.
+  If you succeed, it will light up for 1 second and turn off for 1 second repeatedly.
 
 EOF
 
