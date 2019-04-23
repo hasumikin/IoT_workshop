@@ -10,7 +10,7 @@ introduction = ERB.new <<~EOF
 
   ESP-IDF contains a library that can be used for ESP firmware development and supports the creation of executable files.
 
-  The followings are instructions how to construct "ESP development environment"*.
+  The following are instructions on  how to setup "ESP development environment"*.
   *"ESP development environment" : development environment in which ESP-IDF and related tools are setup.
 
   ## Setting up Development Environment
@@ -43,7 +43,7 @@ introduction = ERB.new <<~EOF
 
   Therefore, this manual assumes that you build an ESP development environment on the host OS.
 
-  If you want to use a virtual environment, please create an ESP development environment on the guest OS after creating the environment on the host OS first in order to proceed the workshop smoothly. And please share information about how you can and can not do it well.
+  If you want to use a virtual environment, please create an ESP development environment on the guest OS after creating the environment on the host OS first in order to proceed the workshop smoothly. And please share information about how you can and can not do it as well.
 
   Also, Docker seems to have problems with USB drivers in general, so please think that it can not be used (but please try if you are interested in it and let me know if you can use it).
 EOF
@@ -56,7 +56,7 @@ about_ruby = ERB.new <<~EOF
   <% if platform != "MSYS2" %>
     There are several ways to install Ruby, but it is recommended to use the tool "rbenv" to make multiple Ruby coexist in the system.
 
-    **if we have time after the workshop we will use a utility named `mrubyc-utils` which I made. It moves smoothly if you use rbenv
+    **if we have time after the workshop we will use a utility named `mrubyc-utils` which I made. It works smoothly if you use rbenv
   <% end %>
 
 EOF
@@ -93,7 +93,7 @@ mac_idf = ERB.new <<~EOF
   echo 'system' > .python-version
   ```
 
-  Set the environment variable in the .bash_profile file and enable it (read it as appropriate, for example, if you are using zsh instead of bash).
+  Set the environment variable in the .bash_profile file and enable it (read it appropriately, for example, if you are using zsh instead of bash).
   ```bash
   echo 'export PATH="$HOME/esp/xtensa-esp32-elf/bin:$PATH"' >> $HOME/.bash_profile
   echo 'export IDF_PATH="$HOME/esp/esp-idf"' >> $HOME/.bash_profile
@@ -412,7 +412,7 @@ mac_ruby = ERB.new <<~EOF
   RUBY_CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib)" rbenv install <%= cruby_version %>
   ```
 
-  `zlib` may be another library such as` readline`. Please replace as appropriate and take action.
+  `zlib` or another library such as` readline`can be used. Please replace as appropriate and take action.
 
   Finally install mruby. Since mruby 2.x is not integrated with mruby / c, we use 1.4.1.
   ```bash
@@ -462,7 +462,7 @@ msys2_ruby = ERB.new <<~EOF
   ruby --version
   ```
 
-  it is ok if you output like `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` this command
+  it is ok if your output look like `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` this by using the above command
 
   Next install mruby. Since mruby 2.x is not integrated with mruby / c, we use 1.4.1.
   ```bash
