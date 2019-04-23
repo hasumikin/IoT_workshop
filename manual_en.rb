@@ -251,7 +251,7 @@ msys2_idf = ERB.new <<~EOF
   source $HOME/.bash_profile
   ```
 
-  Its easy with MacOs as related tools and WSL are already installed
+  Place ESP-IDF
   ```bash
   mkdir $HOME/esp && cd $HOME/esp
   git clone --recursive https://github.com/espressif/esp-idf.git
