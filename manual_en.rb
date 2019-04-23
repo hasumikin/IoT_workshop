@@ -10,7 +10,7 @@ introduction = ERB.new <<~EOF
 
   ESP-IDF contains a library that can be used for ESP firmware development and supports the creation of executable files.
 
-  The followings are instructions how to construct "ESP development environment"*.
+  The following are instructions on  how to setup "ESP development environment"*.
   *"ESP development environment" : development environment in which ESP-IDF and related tools are setup.
 
   ## Setting up Development Environment
@@ -56,7 +56,7 @@ about_ruby = ERB.new <<~EOF
   <% if platform != "MSYS2" %>
     There are several ways to install Ruby, but it is recommended to use the tool "rbenv" to make multiple Ruby coexist in the system.
 
-    **if we have time after the workshop we will use a utility named `mrubyc-utils` which I made. It moves smoothly if you use rbenv
+    **if we have time after the workshop we will use a utility named `mrubyc-utils` which I made. It works smoothly if you use rbenv
   <% end %>
 
 EOF
@@ -462,7 +462,7 @@ msys2_ruby = ERB.new <<~EOF
   ruby --version
   ```
 
-  it is ok if you output like `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` this command
+  it is ok if your output looks like `ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXX) [i386-mingw32]` this by using the above command
 
   Next install mruby. Since mruby 2.x is not integrated with mruby / c, we use 1.4.1.
   ```bash
