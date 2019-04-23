@@ -7,18 +7,18 @@ introduction = ERB.new <<~EOF
   Convert mruby source code (extension ".rb") to intermediate byte code of extension ".c" by using  mrbc (mruby compiler).The basic flow of mruby/c application development is to operate it (and the mruby/c runtime program) from "main.c".
 
   To develop ESP32 firmware with mruby/c, you need to set up ESP-IDF and related tools provided by Espressif.
-  
+
   ESP-IDF contains a library that can be used for ESP firmware development and supports the creation of executable files.
 
   The followings are instructions how to construct "ESP development environment"*.
   *"ESP development environment" : development environment in which ESP-IDF and related tools are setup.
-  
+
   ## Setting up Development Environment
 
   ### macOS
   You can build ESP development environment on macOS native environment.
 
-  [Link]
+  See [manual for macOS](https://hackmd.io/s/HkVNLyh54)
 
   ### Windows
   The ESP development environment does not work in the native Windows environment,but using a semi Linux environment enables ESP development.
@@ -27,19 +27,19 @@ introduction = ERB.new <<~EOF
   #### Windows10 (64 bit version)
   Use Windows Subsystem for Linux (WSL)
 
-  [Link]
+  See [manual for Windows10(64bit)](https://hackmd.io/s/S1sMdyn5E)
 
   #### Windows other than above
   Use MSYS2
 
-  [Link]
+  See [manual for other than Windows10(64bit)](https://hackmd.io/s/BkslFkn94)
 
   ### Linux Distributions
   Although we do not have environment configuration manual for Linux, it is not difficult for programmers who use Linux as a host OS.
   Refer to Ubuntu startup in the WSL manual for Windows and  build the ESP development environment.
 
   ## About Virtual Environment, Docker
-  About Virtual Box: It is possible to build ESP development environment in VirtualBox running on Linux on Windows 10 Professional. But there are some reports that USB port is not always recognized properly. 
+  About Virtual Box: It is possible to build ESP development environment in VirtualBox running on Linux on Windows 10 Professional. But there are some reports that USB port is not always recognized properly.
 
   Therefore, this manual assumes that you build an ESP development environment on the host OS.
 
@@ -70,7 +70,7 @@ mac_usb = ERB.new <<~EOF
 
   If the dialog "System Extension Blocked" is displayed during installation, open "System Preferences"-> "Security & Privacy"-> "General" and then click "Allow". (it does not appear to be blocked in all environments).
 
-  ![](../images/mac-01.png)
+  ![](<%= images_host %>images/mac-01.png)
 
 EOF
 
@@ -171,7 +171,7 @@ wsl_usb = ERB.new <<~EOF
 
   Please uninstall the driver using Device Manager first.
 
-  ![](../images/uninstall_device.png)
+  ![](<%= images_host %>images/uninstall_device.png)
 
   Then start Windows Powershell or Command Prompt (CMD) __as administrator__ and delete the system definition with the following command.
   Note that the file name `oem9.inf` would be different __depends on the environment__.
@@ -232,7 +232,7 @@ msys2_idf = ERB.new <<~EOF
 
   If the `msys32` directory looks like the image below when you unzip it, it's probably not a problem.
 
-  ![](../images/msys2.png)
+  ![](<%= images_host %>images/msys2.png)
 
   At first, the etc directory etc. were deleted in my environment, so I unpacked and dealt with it on virtual Linux.
 
@@ -281,25 +281,25 @@ wsl_idf = ERB.new <<~EOF
   ### Install WSL (Ubuntu)
 
   Click "Settings" → "Apps and Features" → "Programs and Features".
-  ![](../images/wsl-01-en.png)
+  ![](<%= images_host %>images/wsl-01-en.png)
 
   Click "Turn Windows features on or off", check "Windows Subsystem for Linux" in the "Windows Features" dialog, and click "OK."
-  ![](../images/wsl-02-en.png)
+  ![](<%= images_host %>images/wsl-02-en.png)
 
   Click "Restart now" as it will prompt you to reboot.
-  ![](../images/wsl-03-en.png)
+  ![](<%= images_host %>images/wsl-03-en.png)
 
   After rebooting, search for "Ubuntu" in the "Microsoft Store" app and click to install.
-  ![](../images/wsl-04.png)
+  ![](<%= images_host %>images/wsl-04.png)
 
   Launch the "Ubuntu" app (this is the Ubuntu version of WSL).
-  ![](../images/wsl-05.png)
+  ![](<%= images_host %>images/wsl-05.png)
 
   The first time you start up, you need to set the Unix username and password.
 
   __ This username should be the same as your Windows login account. Otherwise, the shared directory between Windows and WSL will not be found. __
 
-  ![](../images/wsl-06.png)
+  ![](<%= images_host %>images/wsl-06.png)
 
   ### Setup environment on Ubuntu
 
@@ -386,7 +386,7 @@ hello_world_posix = ERB.new <<~EOF
   If you get the following screen with the above command, it is successful! `Hello World!` Is output every second.
 
   This program can be terminated with `ctrl + C`.
-  ![](../images/hello_world.png)
+  ![](<%= images_host %>images/hello_world.png)
 
 EOF
 
@@ -436,19 +436,19 @@ msys2_ruby = ERB.new <<~EOF
 
   If the host OS is a 64-bit version of Windows 8 etc., it may be a Ruby installer for 64-bit (rubyinstaller-<%= cruby_version %>-1-x64.exe), but it has not been verified. Generally, 32-bit executable files work on 64-bit versions of Windows. The reverse does not work.
   Double-click the downloaded file, select "I accept the license" and press "NEXT".
-  ![](../images/rubyinstaller2-01.png)
+  ![](<%= images_host %>images/rubyinstaller2-01.png)
 
   Since "Use UTF-8 as default external encoding." would be unchecked, check it and press "Install" (Encoding is not related to this workshop, but used for other purposes Sometimes this looks better).
-  ![](../images/rubyinstaller2-02.png)
+  ![](<%= images_host %>images/rubyinstaller2-02.png)
 
   Confirm that "Run 'ridk ..." is checked, and press "Finish".
-  ![](../images/rubyinstaller2-03.png)
+  ![](<%= images_host %>images/rubyinstaller2-03.png)
 
   When the installation of CRuby is completed, this screen for installing the related tools will be displayed. Enter "3" and press the enter (return) key.
-  ![](../images/rubyinstaller2-04.png)
+  ![](<%= images_host %>images/rubyinstaller2-04.png)
 
   Do not enter anything on this screen, just press the Enter key to finish installing Ruby.
-  ![](../images/rubyinstaller2-05.png)
+  ![](<%= images_host %>images/rubyinstaller2-05.png)
 
   Pass the path to the MSYS2 command line.
   ```bash
@@ -617,11 +617,11 @@ hello_world_esp = ERB.new <<~EOF
   If the size of the terminal (window) is too small, you will get an error saying "Can't create menuconfig screen".
   Increase the window size and `make` again.
 
-  ![](../images/menuconfig-01.png)
+  ![](<%= images_host %>images/menuconfig-01.png)
 
   The configuration file should be generated automatically (this will cause the configuration screen to disappear on the next `make` command. The command to display explicitly is` make menuconfig`), and the project should begin to build. It is normal if it ends with the output like the following image.
 
-  ![](../images/hello_world_build.png)
+  ![](<%= images_host %>images/hello_world_build.png)
 
   If it did not end normally, it is possible that you skipped some part of the previous procedure or did not follow the procedure correctly due to a typo and proceed without noticing the error message.
 
@@ -637,7 +637,7 @@ win_usb_confirm = ERB.new <<~EOF
 
    Open the "Device Manager" application and connect the micro connector side of the USB cable to the ESP32 development board and the type A connector to a Windows PC in that state.
    Since "USB to UART bridge driver" is installed, items like "Silicon Labs CP210x USB to UART Bridge (COM5)" should appear in "Port (COM and LPT)" as shown in the image. The name may differ depending on the environment.
-  ![](../images/device_manager-en.png)
+  ![](<%= images_host %>images/device_manager-en.png)
 
   The last digit "5" of "(COM5)" may be different in your environment.
   Please remember this number.
@@ -664,10 +664,10 @@ hello_world_esp_run = ERB.new <<~EOF
   - WSL：「/dev/ttyS5」（Please change the last number to the same one as the COM number checked earlier）
   - MSYS2：「COM5」（The same string as the "COM name" confirmed above. Unlike WSL, `/dev/` part is unnecessary）
 
-  ![](../images/menuconfig-01.png)
-  ![](../images/menuconfig-02.png)
-  ![](../images/menuconfig-03.png)
-  ![](../images/menuconfig-04.png)
+  ![](<%= images_host %>images/menuconfig-01.png)
+  ![](<%= images_host %>images/menuconfig-02.png)
+  ![](<%= images_host %>images/menuconfig-03.png)
+  ![](<%= images_host %>images/menuconfig-04.png)
 
   ### Write a project and execute
 
@@ -718,7 +718,7 @@ multi_task = ERB.new <<~EOF
 
   ### Wire to the breadboard
 
-  ![](../images/breadboard_multi_tasks.png)
+  ![](<%= images_host %>images/breadboard_multi_tasks.png)
 
   
   It combines the LED circuit and thermistor circuit up to the previous time.
@@ -885,7 +885,7 @@ multi_task = ERB.new <<~EOF
 
   Were you able to do it well? When the temperature exceeds 30°C by touching the thermistor with a finger, the LED blinks
 
-  ![](../images/capture_multi_tasks.png)
+  ![](<%= images_host %>images/capture_multi_tasks.png)
 
   There are two infinite loops (master.rb and slave.rb) in this project, which are linked through the global variable `$ status`.
 
@@ -910,24 +910,24 @@ taking_temperature = ERB.new <<~EOF
 
   It is an element whose resistance varies with temperature. The relation between the resistance value and the temperature can be expressed by the following approximate expression.
 
-  ![](../images/thermistor_approximation_1.png)
+  ![](<%= images_host %>images/thermistor_approximation_1.png)
 
   This is solved for T.
 
-  ![](../images/thermistor_approximation_2.png)
+  ![](<%= images_host %>images/thermistor_approximation_2.png)
 
   The figure below is a part of the data sheet. The value B is called the B constant and has a fixed value for each thermistor element.
   To is 25℃
   Rref may be arbitrarily determined for each circuit, and here is 10kΩ.
 
-  ![](../images/thermistor_datasheet.png)
+  ![](<%= images_host %>images/thermistor_datasheet.png)
 
   Source: http://akizukidenshi.com/download/ds/semitec/at-thms.pdf_
 
   After that, if you know the resistance value of R, that is, the thermistor, you can find the temperature T.
   So how do you measure R? Please see the figure below.
 
-  ![](../images/thermistor_circuit_resistance.png)
+  ![](<%= images_host %>images/thermistor_circuit_resistance.png)
 
   It indicates that the voltage value Vref in this figure should be known. If you look closely, this is also Ohm's law.
 
@@ -939,7 +939,7 @@ taking_temperature = ERB.new <<~EOF
 
   Connect the ESP32 development board with resistors and thermistors on a breadboard. The blue element is a thermistor, and there is no rule of direction.
 
-  ![](../images/breadboard_thermistor.png)
+  ![](<%= images_host %>images/breadboard_thermistor.png)
 
   By comparing with the circuit diagram, you can understand that the “IO0” pin is fixed at 3.3 V and the “IO4” pin measures Vref.
 
@@ -1074,7 +1074,7 @@ taking_temperature = ERB.new <<~EOF
 
   Hopefully, the temperature should be displayed every second.
 
-  ![](../images/capture_taking_temperature.png)
+  ![](<%= images_host %>images/capture_taking_temperature.png)
 
 EOF
 
@@ -1094,7 +1094,7 @@ led_blinking = ERB.new <<~EOF
   Basic electrical knowledge is required to make the LED glow. Look at the picture below.
 
 
-  ![](../images/resistor.jpg)
+  ![](<%= images_host %>images/resistor.jpg)
 
   When there is a potential difference (V) of 3 volts across a 10 kiloohm (= 10000 ohm) resistance (R), the current (I) flowing is 0.3 milliamps.
   This can be calculated from `I = V / R` which is obtained by transforming the basic equation `V = I * R` of Ohm's law.
@@ -1102,13 +1102,13 @@ led_blinking = ERB.new <<~EOF
   Next, let's look at part of the LED data sheet.
   Vf is the potential difference generated at both ends of the LED. Here, Vf uses a 2.1V red LED.
 
-  ![](../images/led_datasheet.png)
+  ![](<%= images_host %>images/led_datasheet.png)
 
   Source: http://akizukidenshi.com/download/ds/optosupply/OSXXXX3Z74A_VER_A1.pdf_
 
   Connect this LED and a 330Ω resistor in series, and apply 3.3V across the circuit.
 
-  ![](../images/led_circuit.png)
+  ![](<%= images_host %>images/led_circuit.png)
 
   Since the LED always produces a potential difference of 2.1 V (I think you can see that we have omitted the detailed discussion), the resistor is charged with a voltage of 1.2 V.
   According to Ohm's law (3.3-2.1) / 330 = 0.0036, the current is 3.6 mA.
@@ -1121,15 +1121,15 @@ led_blinking = ERB.new <<~EOF
   In the schematic above, the anode is pin 2 and the cathode is pin 1.
   In the case of this circuit, it will not be broken even if you make a mistake and insert it in reverse.
 
-  ![](../images/LED.png)
+  ![](<%= images_host %>images/LED.png)
 
   In the case of this breadboard diagram, insert the anode on the right and the cathode on the left.
 
-  ![](../images/blinking_led_breadboard.png)
+  ![](<%= images_host %>images/blinking_led_breadboard.png)
 
   The upper wiring diagram and the lower photo represent the same connection.
 
-  ![](../images/photo_led_blinking.jpg)
+  ![](<%= images_host %>images/photo_led_blinking.jpg)
 
   3.3V is applied to ESP32's "IO19" pin.
   The power supply voltage supplied from the USB cable is 5V.
@@ -1231,6 +1231,8 @@ msys2 = String.new
 title = ERB.new("# Setup environment for ESP32 + mruby/c development - <%= platform %>\n\n")
 
 cruby_version = "2.6.2"
+
+images_host = "https://raw.githubusercontent.com/hasumikin/IoT_workshop/master/"
 
 platform = "macOS"
 mac << title.result(binding)
