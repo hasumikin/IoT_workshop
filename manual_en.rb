@@ -405,7 +405,7 @@ mac_ruby = ERB.new <<~EOF
 
   Ruby is installed on macOS, but please install a new version.
   ```bash
-  rbenv install <%= cruby_version %>
+  rbenv install ////////////////////
   ```
   If you get an error such as `The Ruby zlib extension was not compiled.` at this time, you may be able to install it as follows.
   ```bash
@@ -523,7 +523,7 @@ wsl_ruby = ERB.new <<~EOF
   ruby --version
   ```
 
-  succeeded if following output is obtained - ruby 2.6.2pXX (2019-XX-XX revision XXXXXX) [x86_64-linux] 
+  succeeded if following output is obtained - ruby <%= cruby_version %>pXX (2019-XX-XX revision XXXXXX) [x86_64-linux] 
 
   Install mruby. As of now, mruby-2.x can not be used for mruby/c, so please install 1.4.1.
   ```bash
@@ -1230,7 +1230,7 @@ msys2 = String.new
 
 title = ERB.new("# Setup environment for ESP32 + mruby/c development - <%= platform %>\n\n")
 
-cruby_version = "2.6.2"
+cruby_version = "2.6.3"
 
 images_host = "https://raw.githubusercontent.com/hasumikin/IoT_workshop/master/"
 
