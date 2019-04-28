@@ -1,7 +1,7 @@
 require "erb"
 
 introduction = ERB.new <<~EOF
-  # Environment construction for ESP32 + mruby/c development - Introduction
+  # Environment for ESP32 + mruby/c development - Introduction
 
   Convert mruby source code (extension ".rb") to intermediate byte code of extension ".c" by using  mrbc (mruby compiler).The basic flow of mruby/c application development is to operate it (and the mruby/c runtime program) from "main.c".
 
@@ -921,7 +921,7 @@ taking_temperature = ERB.new <<~EOF
 
   ![](<%= images_host %>images/thermistor_datasheet.png)
 
-  Source: http://akizukidenshi.com/download/ds/semitec/at-thms.pdf_
+  Source: http://akizukidenshi.com/download/ds/semitec/at-thms.pdf
 
   After that, if you know R, the resistance value of the thermistor, you can find the temperature T.
   So how do you measure R? Please see the figure below.
@@ -1103,7 +1103,7 @@ led_blinking = ERB.new <<~EOF
 
   ![](<%= images_host %>images/led_datasheet.png)
 
-  Source: http://akizukidenshi.com/download/ds/optosupply/OSXXXX3Z74A_VER_A1.pdf_
+  Source: http://akizukidenshi.com/download/ds/optosupply/OSXXXX3Z74A_VER_A1.pdf
 
   Connect this LED and a 330Ω resistor in series, and apply 3.3V across the circuit.
 
@@ -1269,12 +1269,12 @@ end
 
 platform = "WSL"
 File.open("en/doc_5_hello_world_posix.md", "w") do |f|
-  f.puts "# hands-on - 1\n\n"
+  f.puts "# Hands on 01\n\n"
   f.puts hello_world_posix.result(binding)
 end
 
 File.open("en/doc_6_hello_world_esp.md", "w") do |f|
-  f.puts "# hands-on - 2\n\n"
+  f.puts "# Hands on 02\n\n"
   f.puts hello_world_esp.result(binding)
   f.puts win_usb_confirm.result(binding)
   f.puts mac_usb_confirm.result(binding)
@@ -1283,7 +1283,7 @@ end
 
 %w(led_blinking taking_temperature multi_task).each_with_index do |handson, index|
   File.open("en/doc_#{index + 7}_#{handson}.md", "w") do |f|
-    f.puts "# hands-on - #{index + 3}\n\n"
+    f.puts "# Hands on 0#{index + 3}\n\n"
     f.puts eval(handson).result(binding)
   end
 end
