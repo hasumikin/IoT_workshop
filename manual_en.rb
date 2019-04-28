@@ -1,5 +1,4 @@
-require 'erb'
-
+require "erb"
 
 introduction = ERB.new <<~EOF
   # Environment construction for ESP32 + mruby/c development - Introduction
@@ -405,7 +404,7 @@ mac_ruby = ERB.new <<~EOF
 
   Ruby is installed on macOS, but please install a new version.
   ```bash
-  rbenv install ////////////////////
+  rbenv install <%= cruby_version %>
   ```
   If you get an error such as `The Ruby zlib extension was not compiled.` at this time, you may be able to install it as follows.
   ```bash
@@ -693,10 +692,10 @@ EOF
 
 
 multi_task = ERB.new <<~EOF
-  ## Multitasking with mruby/c
+  ## Multi-tasking with mruby/c
 
   In the previous hands-ons, we have learned basic usage of microcontrollers and peripherals.
-  The final session will create a project that uses the multitasking function that is one of the features of mruby/c.
+  The final session will create a project that uses the multi-tasking function that is one of the features of mruby/c.
 
   ### Used parts
   - Red LED
@@ -709,12 +708,12 @@ multi_task = ERB.new <<~EOF
   ### What is a task?
 
   It has almost the same meaning as "thread" in Linux and Windows.
-  The function that controls the allocation of CPU time for each thread and allows multiple threads (processing blocks) to proceed simultaneously is called multithreading.
+  The function that controls the allocation of CPU time for each thread and allows multiple threads (processing blocks) to proceed simultaneously is called multi-threading.
 
-  Although the OS controls multitasking even on microcontrollers that have RTOS (real-time OS), mruby / c includes a mechanism to realize multitasking without an OS, which makes easier to develop practical farmwares with small memory usages.
+  Although the OS controls multi-tasking even on microcontrollers that have RTOS (real-time OS), mruby / c includes a mechanism to realize multi-tasking without an OS, which makes easier to develop practical farmwares with small memory usages.
 
 
-  ※The program in this article uses ESP's real time OS. However, multitasking is realized by the mruby/c function.
+  ※The program in this article uses ESP's real time OS. However, multi-tasking is realized by the mruby/c function.
 
   ### Wire to the breadboard
 
@@ -890,7 +889,7 @@ multi_task = ERB.new <<~EOF
   There are two infinite loops (master.rb and slave.rb) in this project, which are linked through the global variable `$ status`.
 
   It is the interesting part of firmware development that multiple tasks wait for input from the user, control the display, monitor the network connection status and requests, and cooperate with each other.
-  If you use mruby / c, you can easily create such multitasks, and you may also realized that you can combine the high productivity of the Ruby language.
+  If you use mruby / c, you can easily create such multi tasks, and you may also realized that you can combine the high productivity of the Ruby language.
   
   THE END.  I hope you enjoyed this article.  Thank you!
 
@@ -1079,7 +1078,7 @@ taking_temperature = ERB.new <<~EOF
 EOF
 
 led_blinking = ERB.new <<~EOF
-  ## blink LED (light emitting diode blinks)
+  ## Blinking LED
 
   Blinking LED in the microcontroller world is like Hello World in the software world. If you can light the LED, you are also a good microcontroller detective.
 
