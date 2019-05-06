@@ -15,7 +15,7 @@
   - [Setup environment for ESP32 + mruby/c development - macOS](https://hackmd.io/s/HkVNLyh54)
   - [Setup environment for ESP32 + mruby/c development - WSL (64bit Windows10)](https://hackmd.io/s/S1sMdyn5E)
   - [Setup environment for ESP32 + mruby/c development - MSYS2 (Other than 64bit Windows10)](https://hackmd.io/s/BkslFkn94)
-- [Hands On 01 - Hello mruby/c World!]()
+- [Hands On 01 - Hello mruby/c World!](https://hackmd.io/s/SyRirSQjV)
 - [Hands On 02 - Hello ESP32 World!]()
 - [Hands On 03 - Blinking LED]()
 - [Hands On 04 - Taking temperature]()
