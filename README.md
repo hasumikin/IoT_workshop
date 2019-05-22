@@ -15,7 +15,7 @@
 - Thermistor 103AT-2 (10kOhm@25degrees[Celsius])
 - Resistor 10kOhm
 - Resistor 330Ohm
-- Junmp wire * 2
+- Jump wire * 2
 
 You will find how them look like in the slide.
 
