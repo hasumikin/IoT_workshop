@@ -6,8 +6,19 @@
   - May 6, 2019 in Warszawa, Polska
   - May 15, 2019 in Kraków, Polska
 
-### Slides and more
-(TODO)
+### Slide
+
+[Slide on rabbit-shocker](https://slide.rabbit-shocker.org/authors/hasumikin/RubyConfPoland2019-Workshop/)
+
+### Parts
+
+- ESP32-DecKitC
+- Breadboard
+- LED Red(Vf = 2.1V)
+- Thermistor 103AT-2 (10kOhm@25degrees[Celsius])
+- Resistor 10kOhm
+- Resistor 330Ohm
+- Junmp wire * 2
 
 ### Tabel of contents (link to Hackmd)
 
