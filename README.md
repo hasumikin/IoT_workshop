@@ -6,10 +6,6 @@
   - May 6, 2019 in Warszawa, Polska
   - May 15, 2019 in Kraków, Polska
 
-### Slide
-
-[Slide on rabbit-shocker](https://slide.rabbit-shocker.org/authors/hasumikin/RubyConfPoland2019-Workshop/)
-
 ### Parts
 
 - ESP32-DecKitC
@@ -20,7 +16,13 @@
 - Resistor 330Ohm
 - Junmp wire * 2
 
-### Tabel of contents (link to Hackmd)
+### Slide
+
+- [Slide on rabbit-shocker](https://slide.rabbit-shocker.org/authors/hasumikin/RubyConfPoland2019-Workshop/)
+
+You should start the workshop with the slide above and see the followings as needed. 
+
+### Docs for environment and hands-ons (mentioned in the Slide)
 
 - [Environment for ESP32 + mruby/c development - Introduction](https://hackmd.io/s/B1cgg1hcE)
   - [Setup environment for ESP32 + mruby/c development - macOS](https://hackmd.io/s/HkVNLyh54)
